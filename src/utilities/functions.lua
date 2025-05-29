@@ -39,7 +39,7 @@ function PL_UTIL.AddNametagJokerNames()
   NametagCompatible = {}
 
   for _, mod in ipairs(SMODS.mod_list) do
-    if NFS.getInfo(mod.path .. 'localization/en-us.lua') then
+    if mod.can_load and NFS.getInfo(mod.path .. 'localization/en-us.lua') then
       local loc_file = assert(loadstring(NFS.read(mod.path .. 'localization/en-us.lua'))())
       if loc_file and loc_file.descriptions and loc_file.descriptions.Joker then
         for k, v in pairs(loc_file.descriptions.Joker) do
