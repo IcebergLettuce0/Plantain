@@ -83,12 +83,12 @@ SMODS.Consumable{
 		end
 	end,
 
-	use = function(self, card)
-
+	use = function(self, card, area)
 
 		local rightmost = G.hand.highlighted[3]
 		local middle = G.hand.highlighted[2]
 		local leftmost = G.hand.highlighted[1]
+		local destroyed_cards = {}
 
 		for i=1, #G.hand.highlighted do
 			if G.hand.highlighted[i].T.x < math.max(rightmost.T.x, middle.T.x, leftmost.T.x) and G.hand.highlighted[i].T.x > math.min(rightmost.T.x, middle.T.x, leftmost.T.x) then
@@ -104,8 +104,6 @@ SMODS.Consumable{
 					play_sound('tarot2', percent, 0.6);
 					G.hand.highlighted[i]:juice_up(0.3, 0.3);
 				return true end }))
-			else
-				destroyed_card = middle
 			end
 		end
 		for i=1, #G.hand.highlighted do
@@ -124,15 +122,20 @@ SMODS.Consumable{
 			end
 		end
 
+		destroyed_cards[#destroyed_cards+1] = middle
+
+		SMODS.calculate_context({scoring_hand = destroyed_cards, remove_playing_cards = true, removed = destroyed_cards})
+
 		G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.2,
-            func = function() 
-				if SMODS.shatters(destroyed_card) then
-					destroyed_card:shatter()
-				else
-					destroyed_card:start_dissolve(nil, destroyed_card)
-				end
-		return true end }))
+            func = function()
+                if middle.shattered then
+                    middle:shatter()
+                else
+                    middle:start_dissolve()
+                end
+                return true
+            end
+        }))
+		
 	end,
 }
