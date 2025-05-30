@@ -16,6 +16,13 @@ SMODS.Atlas {
   px = 71,
   py = 95
 }
+
+SMODS.Atlas {
+  key = 'pl_atlas_w3',
+  path = 'pl_atlas_w3.png',
+  px = 71,
+  py = 95
+}
   
 SMODS.Atlas{
   key = "pl_atlas_consumables",
@@ -113,5 +120,6 @@ end
 
 SMODS.load_file('src/additions/pl_jokers_w1.lua')()
 SMODS.load_file('src/additions/pl_jokers_w2.lua')()
+SMODS.load_file('src/additions/pl_jokers_w3.lua')()
 SMODS.load_file('src/additions/pl_consumables.lua')()
 SMODS.load_file('src/additions/pl_seals.lua')()
