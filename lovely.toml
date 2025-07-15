@@ -55,43 +55,6 @@ end
 if should_ease_discard then ease_discard(-1) end
 '''
 
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-match_indent = true
-pattern = '''func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
-    }))'''
-position = "after"
-payload = '''
-if G.jokers and G.jokers.cards and card and card.ability and card.ability.name ~= 'Black Hole' and not G.GAME.pl_croissant_disallowed then
-  G.GAME.pl_lvl_hand = hand
-  G.GAME.pl_lvl_card = card
-  G.GAME.pl_lvl_instant = instant
-  G.GAME.pl_lvl_amount = amount
-  for i=1, #G.jokers.cards do
-    eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
-  end
-end
-'''
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-match_indent = true
-pattern = '''for k, v in pairs(G.GAME.hands) do
-            level_up_hand(self, k, true)
-        end
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})'''
-position = "after"
-payload = '''
-if G.jokers and G.jokers.cards and not G.GAME.pl_croissant_disallowed then
-  G.GAME.pl_lvl_card = self
-  G.GAME.pl_lvl_instant = true
-  for i=1, #G.jokers.cards do
-    eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
-  end
-end
-'''
 
 [[patches]]
 [patches.pattern]
@@ -162,4 +125,41 @@ pattern = '''enhanced = G.C.SECONDARY_SET.Enhanced'''
 position = "after"
 payload = ''',
 lavender = HEX('C1A1DF')
+'''
+
+#croissant
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+match_indent = true
+pattern = '''G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
+    }))'''
+position = "after"
+payload = '''
+G.GAME.pl_amount = amount 
+G.GAME.pl_card = card 
+G.GAME.pl_instant = instant
+G.GAME.pl_hand = hand
+if not G.GAME.pl_using_croissant and not G.GAME.pl_croissant_consumable then
+  G.GAME.pl_using_croissant = true
+  SMODS.calculate_context({pl_croissant_upgrade = true})
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+match_indent = true
+pattern = '''end
+
+function Card:can_use_consumeable(any_state, skip_check)'''
+position = "before"
+payload = '''
+if G.GAME.pl_card and not G.GAME.pl_using_croissant then
+  G.GAME.pl_using_croissant = true
+  SMODS.calculate_context({pl_croissant_upgrade = true})
+end
 '''

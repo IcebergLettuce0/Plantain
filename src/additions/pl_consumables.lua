@@ -110,12 +110,7 @@ SMODS.Consumable{
 			if (G.hand.highlighted[i] ~= middle) then
 				
 				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.5,func = function()
-					local suit_prefix = string.sub(G.hand.highlighted[i].base.suit, 1, 1)..'_'
-                	local rank_suffix = middle.base.id < 10 and tostring(middle.base.id) or
-					middle.base.id == 10 and 'T' or middle.base.id == 11 and 'J' or
-					middle.base.id == 12 and 'Q' or middle.base.id == 13 and 'K' or
-					middle.base.id == 14 and 'A'
-					G.hand.highlighted[i]:set_base(G.P_CARDS[suit_prefix..rank_suffix])
+					assert(SMODS.change_base(G.hand.highlighted[i], nil, middle.base.value));
 					G.hand.highlighted[i]:flip();play_sound('tarot2', percent, 0.6);
 					G.hand.highlighted[i]:juice_up(0.3, 0.3);
 					return true end }))
