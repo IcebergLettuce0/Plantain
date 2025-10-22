@@ -218,6 +218,31 @@ return {
           'per card {C:attention}sold'
         }
       },
+      j_pl_early_man = {
+        name = 'Early Man',
+        text = {
+          'Create a copy of',
+          '{C:tarot}The Wheel of Fortune',
+          'when {C:attention}Blind{} selected'
+        }
+      },
+      j_pl_time_traveller = {
+        name = 'Time Traveller',
+        text = {
+          'Each card held in',
+          'hand with {V:1}#1#{} suit',
+          'gives {C:chips}+#2#{} Chips,',
+          '{s:0.8}suit changes at end of round'
+        }
+      },
+      j_pl_game_cartridge = {
+        name = 'Game Cartridge',
+        text = {
+          'First played {C:attention}2{}, {C:attention}4{}, and {C:attention}8',
+          '{C:attention}each{} give {X:mult,C:white}X#1#{} Mult',
+          'when scored'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
