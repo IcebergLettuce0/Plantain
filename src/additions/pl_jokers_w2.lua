@@ -23,71 +23,53 @@ SMODS.Joker {
   },
 
   calculate = function (self, card, context)
+    if context.using_consumeable then
+      G.GAME.pl_croissant_consumable = true
+    end
+
     if context.pl_croissant_upgrade then
-      
-      if not context.blueprint then
-        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.SECONDARY_SET.Planet})
+      card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
+      if G.GAME.pl_card and G.GAME.pl_card.ability.consumeable then
+        G.GAME.pl_card:use_consumeable(G.GAME.pl_card.area)
       else
-        card_eval_status_text(context.blueprint_card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.SECONDARY_SET.Planet})
+        level_up_hand(context.blueprint_card or card, G.GAME.pl_hand, G.GAME.pl_instant, G.GAME.pl_amount)
       end
-
-      G.GAME.pl_croissant_disallowed = true
-
-      if G.GAME.pl_lvl_card.ability.name ~= 'Black Hole' then
-        level_up_hand(G.GAME.pl_lvl_card, G.GAME.pl_lvl_hand, G.GAME.pl_lvl_instant, G.GAME.pl_lvl_amount)
-      else
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize('k_all_hands'),chips = '...', mult = '...', level=''})
-        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-            play_sound('tarot1')
-            G.GAME.pl_lvl_card:juice_up(0.8, 0.5)
-            G.TAROT_INTERRUPT_PULSE = true
-            return true end }))
-        update_hand_text({delay = 0}, {mult = '+', StatusText = true})
-        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-            play_sound('tarot1')
-            G.GAME.pl_lvl_card:juice_up(0.8, 0.5)
-            return true end }))
-        update_hand_text({delay = 0}, {chips = '+', StatusText = true})
-        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-            play_sound('tarot1')
-            G.GAME.pl_lvl_card:juice_up(0.8, 0.5)
-            G.TAROT_INTERRUPT_PULSE = nil
-            return true end }))
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level='+1'})
-        delay(1.3)
-        for k, v in pairs(G.GAME.hands) do
-            level_up_hand(G.GAME.pl_lvl_card, k, true)
-        end
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-      end
-        
-      G.GAME.pl_croissant_disallowed = false
-
-
-      if not context.blueprint then
+      if not context.blueprint then 
         card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
-        if card.ability.extra.upgrades_left < 1 then
-          G.E_MANAGER:add_event(Event({
-          func = function()
-            G.E_MANAGER:add_event(Event({
-              func = function()
-                card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('k_eaten_ex'), colour = G.C.SECONDARY_SET.Planet})
-                play_sound('tarot1')
-                card.T.r = -0.2
-                card:juice_up(0.3, 0.4)
-                card.states.drag.is = true
-                card.children.center.pinch.x = true
-                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                  func = function()
-                    G.jokers:remove_card(self)
-                    card:remove()
-                    card = nil
-                  return true; end})) 
-                return true
-              end}))
-            return true
-          end}))
-        end
+        SMODS.calculate_context({pl_croissant_destroy = true})
+      end
+      G.E_MANAGER:add_event(Event({
+        func = function()
+          G.GAME.pl_card = false
+          G.GAME.pl_hand = false
+          G.GAME.pl_instant = false
+          G.GAME.pl_amount = false
+          G.GAME.pl_using_croissant = false
+          G.GAME.pl_croissant_consumable = false
+          return true
+        end}))
+    end
+
+    if context.pl_croissant_destroy then
+      if card.ability.extra.upgrades_left <= 0 and not context.blueprint then
+        G.E_MANAGER:add_event(Event({
+            func = function()
+              G.E_MANAGER:add_event(Event({
+                func = function()
+                  card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_eaten_ex'), colour = G.C.PLANET})
+                  play_sound('tarot1')
+                  card.T.r = -0.2
+                  card:juice_up(0.3, 0.4)
+                  card.states.drag.is = true
+                  card.children.center.pinch.x = true
+                  G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                    func = function()
+                            G.jokers:remove_card(self)
+                            card:remove()
+                            card = nil
+                        return true; end}))
+                return true; end}))
+              return true; end}))
       end
     end
   end
