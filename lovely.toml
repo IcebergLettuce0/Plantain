@@ -139,27 +139,13 @@ pattern = '''G.E_MANAGER:add_event(Event({
     }))'''
 position = "after"
 payload = '''
-G.GAME.pl_amount = amount 
-G.GAME.pl_card = card 
-G.GAME.pl_instant = instant
-G.GAME.pl_hand = hand
-if not G.GAME.pl_using_croissant and not G.GAME.pl_croissant_consumable then
-  G.GAME.pl_using_croissant = true
-  SMODS.calculate_context({pl_croissant_upgrade = true})
-end
-'''
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-match_indent = true
-pattern = '''end
-
-function Card:can_use_consumeable(any_state, skip_check)'''
-position = "before"
-payload = '''
-if G.GAME.pl_card and not G.GAME.pl_using_croissant then
-  G.GAME.pl_using_croissant = true
-  SMODS.calculate_context({pl_croissant_upgrade = true})
+if not G.GAME.pl_croissant_upgrade then
+  if not instant and card.ability.set == 'Joker' then
+    G.GAME.pl_croissant_upgrade = true
+    G.GAME.pl_card = card
+    G.GAME.pl_hand = hand
+    G.GAME.pl_amount = amount
+    SMODS.calculate_context({pl_croissant_upgrade = true})
+  end
 end
 '''

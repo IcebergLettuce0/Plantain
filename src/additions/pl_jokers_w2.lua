@@ -10,7 +10,7 @@ SMODS.Joker {
     return { vars = { card.ability.extra.upgrades_left } }
   end,
 
-  blueprint_compat = true,
+  blueprint_compat = false,
   eternal_compat = false,
   perishable_compat = true,
   discovered = true,
@@ -22,54 +22,45 @@ SMODS.Joker {
     Food = true
   },
 
-  calculate = function (self, card, context)
-    if context.using_consumeable then
-      G.GAME.pl_croissant_consumable = true
-    end
-
-    if context.pl_croissant_upgrade then
+  calculate = function(self, card, context)
+    if context.using_consumeable and not context.blueprint then
       card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
-      if G.GAME.pl_card and G.GAME.pl_card.ability.consumeable then
-        G.GAME.pl_card:use_consumeable(G.GAME.pl_card.area)
-      else
-        level_up_hand(context.blueprint_card or card, G.GAME.pl_hand, G.GAME.pl_instant, G.GAME.pl_amount)
-      end
-      if not context.blueprint then 
-        card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
-        SMODS.calculate_context({pl_croissant_destroy = true})
-      end
-      G.E_MANAGER:add_event(Event({
-        func = function()
-          G.GAME.pl_card = false
-          G.GAME.pl_hand = false
-          G.GAME.pl_instant = false
-          G.GAME.pl_amount = false
-          G.GAME.pl_using_croissant = false
-          G.GAME.pl_croissant_consumable = false
-          return true
-        end}))
+      context.consumeable:use_consumeable(context.consumeable.area)
+      card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
+      SMODS.calculate_context({pl_croissant_destroy = true})
     end
 
-    if context.pl_croissant_destroy then
-      if card.ability.extra.upgrades_left <= 0 and not context.blueprint then
+    if context.pl_croissant_upgrade and not context.blueprint then
+      card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
+      level_up_hand(G.GAME.pl_card, G.GAME.pl_hand, false, G.GAME.pl_amount)
+      G.GAME.pl_croissant_upgrade = false
+      card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
+      SMODS.calculate_context({pl_croissant_destroy = true})
+    end
+
+    if context.pl_croissant_destroy and not context.blueprint then
+      if card.ability.extra.upgrades_left <= 0 then
         G.E_MANAGER:add_event(Event({
-            func = function()
-              G.E_MANAGER:add_event(Event({
-                func = function()
-                  card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_eaten_ex'), colour = G.C.PLANET})
-                  play_sound('tarot1')
-                  card.T.r = -0.2
-                  card:juice_up(0.3, 0.4)
-                  card.states.drag.is = true
-                  card.children.center.pinch.x = true
-                  G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                    func = function()
-                            G.jokers:remove_card(self)
-                            card:remove()
-                            card = nil
-                        return true; end}))
-                return true; end}))
-              return true; end}))
+          func = function()
+            G.E_MANAGER:add_event(Event({
+              func = function()
+                card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_eaten_ex'), colour = G.C.PLANET})
+                play_sound('tarot1')
+                card.T.r = -0.2
+                card:juice_up(0.3, 0.4)
+                card.states.drag.is = true
+                card.children.center.pinch.x = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+                  func = function()
+                    G.jokers:remove_card(self)
+                    card:remove()
+                    card = nil
+                  return true;
+                end}))
+              return true;
+            end}))
+          return true;
+        end}))
       end
     end
   end
@@ -96,7 +87,7 @@ SMODS.Joker {
 
   calculate = function(self, card, context)
     if context.reroll_shop then
-      if pseudorandom('popup') < G.GAME.probabilities.normal/card.ability.extra.chance then 
+      if pseudorandom('popup') < G.GAME.probabilities.normal/card.ability.extra.chance then
         G.E_MANAGER:add_event(Event {
           func = function()
             PL_UTIL.add_booster_pack()
