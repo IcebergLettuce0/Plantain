@@ -140,13 +140,17 @@ pattern = '''G.E_MANAGER:add_event(Event({
 position = "after"
 payload = '''
 if not G.GAME.pl_croissant_upgrade then
-  if not instant and card.ability.set == 'Joker' then
-    for i=1, #G.jokers.cards do
-      G.GAME.pl_croissant_upgrade = true
-      G.GAME.pl_card = card
-      G.GAME.pl_hand = hand
-      G.GAME.pl_amount = amount
-      eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
+  if not instant and card then
+    if card.ability then
+      if card.ability.set == 'Joker' then
+        for i=1, #G.jokers.cards do
+          G.GAME.pl_croissant_upgrade = true
+          G.GAME.pl_card = card
+          G.GAME.pl_hand = hand
+          G.GAME.pl_amount = amount
+          eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
+        end
+      end
     end
   end
 end
