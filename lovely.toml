@@ -141,11 +141,13 @@ position = "after"
 payload = '''
 if not G.GAME.pl_croissant_upgrade then
   if not instant and card.ability.set == 'Joker' then
-    G.GAME.pl_croissant_upgrade = true
-    G.GAME.pl_card = card
-    G.GAME.pl_hand = hand
-    G.GAME.pl_amount = amount
-    SMODS.calculate_context({pl_croissant_upgrade = true})
+    for i=1, #G.jokers.cards do
+      G.GAME.pl_croissant_upgrade = true
+      G.GAME.pl_card = card
+      G.GAME.pl_hand = hand
+      G.GAME.pl_amount = amount
+      eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
+    end
   end
 end
 '''

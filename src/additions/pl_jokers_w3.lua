@@ -128,3 +128,51 @@ SMODS.Joker {
     end
   end
 }
+
+-- RARES
+
+SMODS.Joker {
+  key = 'extraterrestrial_joker',
+  atlas = 'pl_atlas_w3',
+  pos = { x = 4, y = 0 },
+
+  config = { extra = { most_played_hand = nil } },
+  --loc_vars = function(self, info_queue, card)
+    --self.pl_check_most_played(card)
+    --return {vars = { localize(card.ability.extra.most_played_hand, 'poker_hands') }}
+  --end,
+
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  discovered = true,
+
+  rarity = 3,
+  cost = 8,
+
+  calculate = function (self, card, context)
+    if context.setting_blind then
+      for i=1, #G.consumeables.cards do
+        SMODS.destroy_cards(G.consumeables.cards[i])
+      end
+      self.pl_check_most_played(card)
+      if card.ability.extra.most_played_hand then
+        card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(card.ability.extra.most_played_hand, 'poker_hands'),chips = G.GAME.hands[card.ability.extra.most_played_hand].chips, mult = G.GAME.hands[card.ability.extra.most_played_hand].mult, level=G.GAME.hands[card.ability.extra.most_played_hand].level})
+        level_up_hand(context.blueprint_card or card, card.ability.extra.most_played_hand, nil, 1)
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+      end
+    end
+  end,
+
+  pl_check_most_played = function(card)
+    local _hand, _tally = nil, 0
+    for k, v in ipairs(G.handlist) do
+        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+            _hand = v
+            _tally = G.GAME.hands[v].played
+        end
+    end
+    card.ability.extra.most_played_hand = _hand
+  end
+}
