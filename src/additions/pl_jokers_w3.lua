@@ -129,6 +129,38 @@ SMODS.Joker {
   end
 }
 
+SMODS.Joker {
+  key = 'dunce',
+  atlas = 'pl_atlas_w3',
+  pos = { x = 3, y = 0 },
+
+  config = { extra = { mult = 12 } },
+  loc_vars = function(self, info_queue, card)
+    return {vars = { card.ability.extra.mult }}
+  end,
+
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  discovered = true,
+
+  rarity = 2,
+  cost = 6,
+
+  calculate = function(self, card, context)
+    if context.individual and context.cardarea == G.play then
+      local rank = context.other_card:get_id()
+      if rank == 11 or rank == 12 or rank == 13 then rank = 10 end
+      if rank == 14 then rank = 11 end
+      local new_mult = card.ability.extra.mult - rank
+      return {
+        mult = new_mult,
+        card = card
+      }
+    end
+  end
+}
+
 -- RARES
 
 SMODS.Joker {
@@ -137,6 +169,9 @@ SMODS.Joker {
   pos = { x = 4, y = 0 },
 
   config = { extra = { most_played_hand = nil } },
+  loc_vars = function(self, info_queue, card)
+    return {vars = { card.ability.extra.most_played_hand }}
+  end,
   --loc_vars = function(self, info_queue, card)
     --self.pl_check_most_played(card)
     --return {vars = { localize(card.ability.extra.most_played_hand, 'poker_hands') }}

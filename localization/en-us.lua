@@ -243,6 +243,24 @@ return {
           'when scored'
         }
       },
+      j_pl_dunce = {
+        name = 'Dunce',
+        text = {
+          'Played cards give',
+          '{C:mult}+#1#{} Mult',
+          '{C:attention}minus their rank',
+          'when scored'
+        }
+      },
+      j_pl_extraterrestrial_joker = {
+        name = 'Extraterrestrial Joker',
+        text = {
+          'When {C:attention}Blind{} selected,',
+          '{C:attention}destroy all consumables{} and',
+          'upgrade {C:attention}most played{} hand',
+          '{C:inactive}(Currently {C:attention}#1#{C:inactive})'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
