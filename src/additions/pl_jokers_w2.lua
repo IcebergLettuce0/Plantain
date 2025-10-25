@@ -23,7 +23,7 @@ SMODS.Joker {
   },
 
   calculate = function(self, card, context)
-    if context.using_consumeable and not context.blueprint then
+    if context.using_consumeable and not context.blueprint and (context.consumeable.ability.set == "Planet") then
       card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
       context.consumeable:use_consumeable(context.consumeable.area)
       card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1

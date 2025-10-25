@@ -86,6 +86,7 @@ SMODS.Joker {
   key = 'game_cartridge',
   atlas = 'pl_atlas_w3',
   pos = { x = 2, y = 0 },
+  pixel_size = { w = 71, h = 81 },
 
   config = { extra = { xmult = 2 } },
   loc_vars = function(self, info_queue, card)
@@ -170,7 +171,11 @@ SMODS.Joker {
 
   config = { extra = { most_played_hand = nil } },
   loc_vars = function(self, info_queue, card)
-    return {vars = { card.ability.extra.most_played_hand }}
+    if G.GAME.last_hand_played then
+      return { vars = { localize(card.ability.extra.most_played_hand, 'poker_hands') } }
+    else
+      return { vars = { localize('k_none') } }
+    end
   end,
   --loc_vars = function(self, info_queue, card)
     --self.pl_check_most_played(card)
@@ -186,11 +191,13 @@ SMODS.Joker {
   cost = 8,
 
   calculate = function (self, card, context)
+    if context.cardarea == G.jokers and context.joker_main then
+      self.pl_check_most_played(card)
+    end
     if context.setting_blind then
       for i=1, #G.consumeables.cards do
         SMODS.destroy_cards(G.consumeables.cards[i])
       end
-      self.pl_check_most_played(card)
       if card.ability.extra.most_played_hand then
         card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
         update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(card.ability.extra.most_played_hand, 'poker_hands'),chips = G.GAME.hands[card.ability.extra.most_played_hand].chips, mult = G.GAME.hands[card.ability.extra.most_played_hand].mult, level=G.GAME.hands[card.ability.extra.most_played_hand].level})
