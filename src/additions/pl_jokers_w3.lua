@@ -135,7 +135,7 @@ SMODS.Joker {
   atlas = 'pl_atlas_w3',
   pos = { x = 3, y = 0 },
 
-  config = { extra = { mult = 12 } },
+  config = { extra = { mult = 11 } },
   loc_vars = function(self, info_queue, card)
     return {vars = { card.ability.extra.mult }}
   end,

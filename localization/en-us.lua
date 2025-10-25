@@ -295,7 +295,22 @@ return {
     --Stake={},
     --Tag={},
     --Tarot={},
-    -- Voucher = {},
+    Voucher = {
+      v_pl_ad_break = {
+        name = 'Ad Break',
+        text = {
+          '{C:attention}+1{} pack',
+          'available in shop'
+        }
+      },
+      v_pl_product_placement = {
+        name = 'Product Placement',
+        text = {
+          'All packs in shop',
+          'are {C:attention}Mega{} size'
+        }
+      },
+    },
   },
   misc = {
     dictionary = {
