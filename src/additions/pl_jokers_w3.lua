@@ -172,15 +172,12 @@ SMODS.Joker {
   config = { extra = { most_played_hand = nil } },
   loc_vars = function(self, info_queue, card)
     if G.GAME.last_hand_played then
+      self.pl_check_most_played(card)
       return { vars = { localize(card.ability.extra.most_played_hand, 'poker_hands') } }
     else
       return { vars = { localize('k_none') } }
     end
   end,
-  --loc_vars = function(self, info_queue, card)
-    --self.pl_check_most_played(card)
-    --return {vars = { localize(card.ability.extra.most_played_hand, 'poker_hands') }}
-  --end,
 
   blueprint_compat = true,
   eternal_compat = true,
