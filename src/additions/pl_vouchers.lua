@@ -5,7 +5,7 @@ SMODS.Voucher {
   discovered = true,
 
   redeem = function(self, card)
-
+    SMODS.change_booster_limit(1)
   end,
 }
 
@@ -19,6 +19,6 @@ SMODS.Voucher {
   },
 
   redeem = function(self, card)
-
+    SMODS.change_booster_limit(1)
   end,
 }
