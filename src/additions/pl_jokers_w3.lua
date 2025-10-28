@@ -36,11 +36,11 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-  key = 'time_traveller',
+  key = 'archaeologist',
   atlas = 'pl_atlas_w3',
   pos = { x = 1, y = 0 },
 
-  config = { extra = { chips = 30 } },
+  config = { extra = { chips = 25 } },
   loc_vars = function(self, info_queue, card)
     return {vars = { localize(card.ability.extra.suit, 'suits_singular') , card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
   end,

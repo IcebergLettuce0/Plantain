@@ -1,6 +1,16 @@
 return {
   descriptions = {
-    --Back={},
+    Back={
+      b_pl_sponsored = {
+        name = "Sponsored Deck",
+        text = {
+          'Start run with',
+          '{C:attention,T:v_pl_ad_break}Ad Break{} and',
+          '{C:attention,T:v_pl_product_placement}Product Placement{},',
+          '{C:attention}-1{} shop slot'
+        }
+      },
+    },
     --Blind={},
     --Edition={},
     --Enhanced={},
@@ -171,8 +181,8 @@ return {
         name = 'Hot Air Balloon',
         text = {
           'Earn {C:money}$#1#{} at end of round',
-          'Payout increases by {C:money}$#2#{} when',
-          '{C:tarot}Tarot{} card used, with a {C:green}#3# in #4#',
+          'When {C:tarot}Tarot{} card used, increase',
+          'payout by {C:money}$#2#{}, with {C:green}#3# in #4#{}',
           'chance this card is {C:attention}destroyed'
         }
       },
@@ -226,8 +236,8 @@ return {
           'when {C:attention}Blind{} selected'
         }
       },
-      j_pl_time_traveller = {
-        name = 'Time Traveller',
+      j_pl_archaeologist = {
+        name = 'Archaeologist',
         text = {
           'Each card held in',
           'hand with {V:1}#1#{} suit',
@@ -306,8 +316,8 @@ return {
       v_pl_product_placement = {
         name = 'Product Placement',
         text = {
-          'All packs in shop',
-          'are {C:attention}Mega{} size'
+          'Reroll all {C:attention}unopened',
+          'packs on reroll'
         }
       },
     },

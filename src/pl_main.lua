@@ -32,6 +32,13 @@ SMODS.Atlas{
 }
 
 SMODS.Atlas{
+  key = "pl_atlas_decks",
+  path = "pl_atlas_decks.png",
+  px = 71,
+  py = 95
+}
+
+SMODS.Atlas{
   key = "pl_atlas_seals",
   path = "pl_atlas_seals.png",
   px = 71,
@@ -96,7 +103,7 @@ SMODS.current_mod.extra_tabs = function()
           text = "Art: IcebergLettuce",
           shadow = false,
           scale = scale,
-          colour = G.C.PURPLE
+          colour = G.C.CHIPS
           }
         },
         }
@@ -129,5 +136,6 @@ SMODS.load_file('src/additions/pl_jokers_w1.lua')()
 SMODS.load_file('src/additions/pl_jokers_w2.lua')()
 SMODS.load_file('src/additions/pl_jokers_w3.lua')()
 SMODS.load_file('src/additions/pl_consumables.lua')()
+SMODS.load_file('src/additions/pl_decks.lua')()
 SMODS.load_file('src/additions/pl_seals.lua')()
 SMODS.load_file('src/additions/pl_vouchers.lua')()
