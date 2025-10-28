@@ -18,7 +18,11 @@ SMODS.Voucher {
     'v_pl_ad_break'
   },
 
-  redeem = function(self, card)
-    SMODS.change_booster_limit(1)
+  calculate = function(self, card, context)
+    if context.reroll_shop then
+      for i=1, #G.shop_booster.cards do
+        PL_UTIL.reroll_booster_pack(i)
+      end
+    end
   end,
 }

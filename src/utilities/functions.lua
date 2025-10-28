@@ -33,6 +33,54 @@ function PL_UTIL.add_booster_pack()
   G.shop_booster:emplace(pack)
 end
 
+function PL_UTIL.reroll_booster_pack(position)
+  if not G.shop then return end
+  if #G.shop_booster.cards <= 0 then return end
+  
+  local booster_to_replace = G.shop_booster.cards[position]
+
+  local pack_watch = {}
+  for k, v in pairs(G.P_CENTERS) do
+    if v.set == 'Booster' then
+      table.insert(pack_watch, k)
+    end
+  end
+
+  local pack_chosen = pseudorandom_element(pack_watch, pseudoseed(('pl_booster_reroll')..G.GAME.round_resets.ante))
+
+  local pack = Card(
+    G.shop_booster.T.x + G.shop_booster.T.w / 2,
+    G.shop_booster.T.y,
+    G.CARD_W * 1.27, G.CARD_H * 1.27,
+    G.P_CARDS.empty,
+    G.P_CENTERS[pack_chosen],
+    { bypass_discovery_center = true, bypass_discovery_ui = true }
+  )
+
+  if price then
+    pack.cost = price
+  end
+
+  create_shop_card_ui(pack, 'Booster', G.shop_booster)
+  pack:start_materialize()
+
+  local pack_pos = 1
+  for k, v in ipairs(G.shop_booster.cards) do
+    if v == booster_to_replace then
+      pack_pos = k
+    end
+  end
+
+  table.insert(G.shop_booster.cards, pack_pos, pack)
+  pack:set_card_area(G.shop_booster)
+  pack:juice_up()
+
+  local c = G.shop_booster:remove_card(booster_to_replace)
+  c:remove()
+  c = nil
+
+end
+
 NametagCompatible = {}
 
 function PL_UTIL.AddNametagJokerNames()
