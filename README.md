@@ -1,4 +1,4 @@
-![Plantain Logo](https://github.com/IcebergLettuce0/Plantain/blob/main/content/logo3.png?raw=true)
+![Plantain Logo](https://github.com/IcebergLettuce0/Plantain/blob/dev/content/logo3.png?raw=true)
 
 An aggressively vanilla Balatro content mod, by TeamToaster.
 
