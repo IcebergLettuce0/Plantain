@@ -5,8 +5,7 @@ return {
         name = "Sponsored Deck",
         text = {
           'Start run with',
-          '{C:attention,T:v_pl_ad_break}Ad Break{} and',
-          '{C:attention,T:v_pl_product_placement}Product Placement{},',
+          '{C:attention,T:v_pl_ad_break}Ad Break{},',
           '{C:attention}-1{} shop slot'
         }
       },

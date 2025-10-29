@@ -5,8 +5,7 @@ SMODS.Back {
   discovered = true,
   config = {
       vouchers = {
-        'v_pl_ad_break',
-        'v_pl_product_placement'
+        'v_pl_ad_break'
       },
     },
 
