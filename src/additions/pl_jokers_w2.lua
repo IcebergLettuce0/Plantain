@@ -10,7 +10,7 @@ SMODS.Joker {
     return { vars = { card.ability.extra.upgrades_left } }
   end,
 
-  blueprint_compat = false,
+  blueprint_compat = true,
   eternal_compat = false,
   perishable_compat = true,
   discovered = true,
@@ -23,44 +23,32 @@ SMODS.Joker {
   },
 
   calculate = function(self, card, context)
-    if context.using_consumeable and not context.blueprint and (context.consumeable.ability.set == "Planet") then
+    if context.using_consumeable and (context.consumeable.ability.set == "Planet") then
       card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
       context.consumeable:use_consumeable(context.consumeable.area)
-      card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
-      SMODS.calculate_context({pl_croissant_destroy = true})
-    end
-
-    if context.pl_croissant_upgrade and not context.blueprint then
-      card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_again_ex'), colour = G.C.PLANET})
-      level_up_hand(G.GAME.pl_card, G.GAME.pl_hand, false, G.GAME.pl_amount)
-      G.GAME.pl_croissant_upgrade = false
-      card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
-      SMODS.calculate_context({pl_croissant_destroy = true})
-    end
-
-    if context.pl_croissant_destroy and not context.blueprint then
-      if card.ability.extra.upgrades_left <= 0 then
-        G.E_MANAGER:add_event(Event({
-          func = function()
-            G.E_MANAGER:add_event(Event({
-              func = function()
-                card_eval_status_text(context.blueprint_card or card, 'jokers', nil, nil, nil, {message = localize('k_eaten_ex'), colour = G.C.PLANET})
+      if not context.blueprint then
+        card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
+        if card.ability.extra.upgrades_left <= 0 then
+          G.E_MANAGER:add_event(Event({
+            func = function()
                 play_sound('tarot1')
                 card.T.r = -0.2
                 card:juice_up(0.3, 0.4)
                 card.states.drag.is = true
                 card.children.center.pinch.x = true
                 G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                  func = function()
-                    G.jokers:remove_card(self)
-                    card:remove()
-                    card = nil
-                  return true;
-                end}))
-              return true;
-            end}))
-          return true;
-        end}))
+              func = function()
+                G.jokers:remove_card(self)
+                card:remove()
+                card = nil
+              return true; end})) 
+            return true
+          end
+          })) 
+          return {
+              message = localize('k_eaten_ex')
+          }
+        end
       end
     end
   end

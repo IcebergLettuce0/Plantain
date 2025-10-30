@@ -147,7 +147,7 @@ return {
         name = 'Croissant',
         text = {
           'Retrigger next {C:attention}#1#',
-          'hand upgrades'
+          '{C:planet}Planet{} cards'
         }
       },
       j_pl_pop_up_joker = {

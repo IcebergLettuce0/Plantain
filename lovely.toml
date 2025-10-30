@@ -55,6 +55,7 @@ end
 if should_ease_discard then ease_discard(-1) end
 '''
 
+#grape soda
 
 [[patches]]
 [patches.pattern]
@@ -103,6 +104,8 @@ else
 end
 '''
 
+#lamp
+
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -117,6 +120,8 @@ for i=1, #G.jokers.cards do
 end
 '''
 
+#colors
+
 [[patches]]
 [patches.pattern]
 target = "functions/misc_functions.lua"
@@ -125,33 +130,4 @@ pattern = '''enhanced = G.C.SECONDARY_SET.Enhanced'''
 position = "after"
 payload = ''',
 lavender = HEX('C1A1DF')
-'''
-
-#croissant
-
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-match_indent = true
-pattern = '''G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
-    }))'''
-position = "after"
-payload = '''
-if not G.GAME.pl_croissant_upgrade then
-  if not instant and card then
-    if card.ability then
-      if card.ability.set == 'Joker' then
-        for i=1, #G.jokers.cards do
-          G.GAME.pl_croissant_upgrade = true
-          G.GAME.pl_card = card
-          G.GAME.pl_hand = hand
-          G.GAME.pl_amount = amount
-          eval_card(G.jokers.cards[i], {pl_croissant_upgrade = true})
-        end
-      end
-    end
-  end
-end
 '''
