@@ -1,70 +1,72 @@
-SMODS.Consumable{
-	set = 'Spectral',
-	key = 'spec_aether', 
-    atlas = 'pl_atlas_consumables',
-	pos = { x = 0, y = 0 },
-	
-	config = {extra = {count = 4, cost = 8}},
-	discovered = true,
+if PL_UTIL.config.seals_enabled then
+	SMODS.Consumable{
+		set = 'Spectral',
+		key = 'spec_aether', 
+			atlas = 'pl_atlas_consumables',
+		pos = { x = 0, y = 0 },
+		
+		config = {extra = {count = 4, cost = 8}},
+		discovered = true,
 
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] =
-		{ set = "Other", key = "pl_lavender_seal", specific_vars = {} }
-		return {
-			vars = { card.ability.max_highlighted }
-		}
-	end,
-	use = function(self, card, area, copier)
-		for i = 1, #G.hand.highlighted do
-			local highlighted = G.hand.highlighted[i]
-			-- G.E_MANAGER:add_event(Event({
-			-- 	func = function()
-			-- 		play_sound("tarot1")
-			-- 		highlighted:juice_up(0.3, 0.5)
-			-- 		return true
-			-- 	end,
-			-- }))
-			-- G.E_MANAGER:add_event(Event({
-			-- 	trigger = "after",
-			-- 	delay = 0.1,
-			-- 	func = function()
-			-- 		if highlighted then
-			-- 			highlighted:set_seal("pl_lavender")
-			-- 		end
-			-- 		return true
-			-- 	end,
-			-- }))
-			-- delay(0.5)
-			-- G.E_MANAGER:add_event(Event({
-			-- 	trigger = "after",
-			-- 	delay = 0.2,
-			-- 	func = function()
-			-- 		G.hand:unhighlight_all()
-			-- 		return true
-			-- 	end,
-			-- }))
+		loc_vars = function(self, info_queue, card)
+			info_queue[#info_queue + 1] =
+			{ set = "Other", key = "pl_lavender_seal", specific_vars = {} }
+			return {
+				vars = { card.ability.max_highlighted }
+			}
+		end,
+		use = function(self, card, area, copier)
+			for i = 1, #G.hand.highlighted do
+				local highlighted = G.hand.highlighted[i]
+				-- G.E_MANAGER:add_event(Event({
+				-- 	func = function()
+				-- 		play_sound("tarot1")
+				-- 		highlighted:juice_up(0.3, 0.5)
+				-- 		return true
+				-- 	end,
+				-- }))
+				-- G.E_MANAGER:add_event(Event({
+				-- 	trigger = "after",
+				-- 	delay = 0.1,
+				-- 	func = function()
+				-- 		if highlighted then
+				-- 			highlighted:set_seal("pl_lavender")
+				-- 		end
+				-- 		return true
+				-- 	end,
+				-- }))
+				-- delay(0.5)
+				-- G.E_MANAGER:add_event(Event({
+				-- 	trigger = "after",
+				-- 	delay = 0.2,
+				-- 	func = function()
+				-- 		G.hand:unhighlight_all()
+				-- 		return true
+				-- 	end,
+				-- }))
 
-			G.E_MANAGER:add_event(Event({func = function()
-				play_sound('tarot1')
-				card:juice_up(0.3, 0.5)
-				return true end }))
-			
-			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-				highlighted:set_seal('pl_lavender', nil, true)
-				return true end }))
-			
-			delay(0.5)
-			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+				G.E_MANAGER:add_event(Event({func = function()
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+					return true end }))
+				
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+					highlighted:set_seal('pl_lavender', nil, true)
+					return true end }))
+				
+				delay(0.5)
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+			end
+		end,
+		can_use = function(self, card, area)
+			if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] then
+				return true
+			else
+				return false
+			end
 		end
-	end,
-	can_use = function(self, card, area)
-		if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] then
-			return true
-		else
-			return false
-		end
-	end
-}
+	}
+end
 
 SMODS.Consumable{
 	set = 'Spectral',

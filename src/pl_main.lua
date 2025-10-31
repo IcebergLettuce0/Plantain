@@ -59,6 +59,48 @@ SMODS.Atlas{
   py = 34
 }
 
+PL_UTIL.config = SMODS.current_mod.config
+
+SMODS.current_mod.config_tab = function()
+  return {
+    n = G.UIT.ROOT,
+    config = { align = 'cm', padding = 0.05, colour = G.C.CLEAR },
+    nodes = {
+      {
+        n = G.UIT.R,
+        config = { align = 'cm' },
+        nodes = {
+          {
+            n = G.UIT.R,
+            nodes = {
+              create_toggle {
+                label = "Enable decks",
+                ref_table = PL_UTIL.config,
+                ref_value = 'decks_enabled'
+              },
+              create_toggle {
+                label = "Enable seals",
+                ref_table = PL_UTIL.config,
+                ref_value = 'seals_enabled',
+              },
+              create_toggle {
+                label = "Enable Spectral cards",
+                ref_table = PL_UTIL.config,
+                ref_value = 'spectral_cards_enabled',
+              },
+              create_toggle {
+                label = "Enable Vouchers",
+                ref_table = PL_UTIL.config,
+                ref_value = 'vouchers_enabled'
+              },
+            }
+          }
+        }
+      }
+    }
+  }
+end
+
 SMODS.current_mod.extra_tabs = function()
   local scale = 0.5
   return {
@@ -135,7 +177,19 @@ end
 SMODS.load_file('src/additions/pl_jokers_w1.lua')()
 SMODS.load_file('src/additions/pl_jokers_w2.lua')()
 SMODS.load_file('src/additions/pl_jokers_w3.lua')()
-SMODS.load_file('src/additions/pl_consumables.lua')()
-SMODS.load_file('src/additions/pl_decks.lua')()
-SMODS.load_file('src/additions/pl_seals.lua')()
-SMODS.load_file('src/additions/pl_vouchers.lua')()
+
+if PL_UTIL.config.decks_enabled then
+  SMODS.load_file('src/additions/pl_decks.lua')()
+end
+
+if PL_UTIL.config.seals_enabled then
+  SMODS.load_file('src/additions/pl_seals.lua')()
+end
+
+if PL_UTIL.config.spectral_cards_enabled then
+  SMODS.load_file('src/additions/pl_consumables.lua')()
+end
+
+if PL_UTIL.config.vouchers_enabled then
+  SMODS.load_file('src/additions/pl_vouchers.lua')()
+end
