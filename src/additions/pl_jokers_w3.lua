@@ -9,6 +9,9 @@ SMODS.Joker {
   eternal_compat = true,
   perishable_compat = true,
   discovered = true,
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue + 1] = G.P_CENTERS.c_wheel_of_fortune
+  end,
 
   rarity = 1,
   cost = 3,
