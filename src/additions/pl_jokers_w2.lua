@@ -418,7 +418,7 @@ SMODS.Joker {
   discovered = true,
 
   rarity = 3,
-  cost = 5,
+  cost = 8,
 
   pools = {
     Food = true
