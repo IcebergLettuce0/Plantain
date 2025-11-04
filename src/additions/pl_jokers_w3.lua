@@ -45,7 +45,7 @@ SMODS.Joker {
 
   config = { extra = { chips = 25 } },
   loc_vars = function(self, info_queue, card)
-    return {vars = { localize(card.ability.extra.suit, 'suits_singular') , card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
+    return {vars = { localize(card.ability.extra.suit, 'suits_singular'), card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
   end,
 
   blueprint_compat = true,

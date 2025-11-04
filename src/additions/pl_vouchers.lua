@@ -20,9 +20,7 @@ SMODS.Voucher {
 
   calculate = function(self, card, context)
     if context.reroll_shop then
-      for i=1, #G.shop_booster.cards do
-        PL_UTIL.reroll_booster_pack(i)
-      end
+      PL_UTIL.reroll_booster_packs()
     end
   end,
 }
