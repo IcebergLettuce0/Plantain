@@ -60,7 +60,7 @@ SMODS.Joker {
   pos = { x = 1, y = 0 },
   soul_pos = { x = 0, y = 2},
   
-  config = { extra = { chance = 4 } },
+  config = { extra = { chance = 2 } },
   loc_vars = function(self, info_queue, card)
     return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.chance} }
   end,
@@ -75,26 +75,28 @@ SMODS.Joker {
 
   calculate = function(self, card, context)
     if context.reroll_shop then
-      if pseudorandom('popup') < G.GAME.probabilities.normal/card.ability.extra.chance then
-        G.E_MANAGER:add_event(Event {
-          func = function()
-            PL_UTIL.add_booster_pack()
-            return true
-          end
-        })
+      if #G.shop_booster.cards < G.GAME.starting_params.boosters_in_shop + (G.GAME.modifiers.extra_boosters or 0) then
+        if pseudorandom('popup') < G.GAME.probabilities.normal/card.ability.extra.chance then
+          G.E_MANAGER:add_event(Event {
+            func = function()
+              PL_UTIL.add_booster_pack()
+              return true
+            end
+          })
 
-        local pop_up_options = {
-          'pl_pop_up_joker_winner_1',
-          'pl_pop_up_joker_winner_2',
-          'pl_pop_up_joker_winner_3',
-          'pl_pop_up_joker_winner_4',
-        }
+          local pop_up_options = {
+            'pl_pop_up_joker_winner_1',
+            'pl_pop_up_joker_winner_2',
+            'pl_pop_up_joker_winner_3',
+            'pl_pop_up_joker_winner_4',
+          }
 
-        local pop_up_message = pop_up_options[ math.random( #pop_up_options ) ]
-  
-        return {
-          message = localize(pop_up_message),
-        }
+          local pop_up_message = pop_up_options[ math.random( #pop_up_options ) ]
+    
+          return {
+            message = localize(pop_up_message),
+          }
+        end
       end
     end
   end
@@ -418,7 +420,7 @@ SMODS.Joker {
   discovered = true,
 
   rarity = 3,
-  cost = 5,
+  cost = 8,
 
   pools = {
     Food = true

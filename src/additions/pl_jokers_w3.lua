@@ -9,6 +9,9 @@ SMODS.Joker {
   eternal_compat = true,
   perishable_compat = true,
   discovered = true,
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue + 1] = G.P_CENTERS.c_wheel_of_fortune
+  end,
 
   rarity = 1,
   cost = 3,
@@ -42,7 +45,7 @@ SMODS.Joker {
 
   config = { extra = { chips = 25 } },
   loc_vars = function(self, info_queue, card)
-    return {vars = { localize(card.ability.extra.suit, 'suits_singular') , card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
+    return {vars = { localize(card.ability.extra.suit, 'suits_singular'), card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
   end,
 
   blueprint_compat = true,
@@ -99,7 +102,7 @@ SMODS.Joker {
   discovered = true,
 
   rarity = 2,
-  cost = 5,
+  cost = 6,
 
   calculate = function (self, card, context)
     if context.individual and context.cardarea == G.play then
