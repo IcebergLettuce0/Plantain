@@ -74,22 +74,22 @@ SMODS.current_mod.config_tab = function()
             n = G.UIT.R,
             nodes = {
               create_toggle {
-                label = "Enable decks",
+                label = localize('pl_config_decks') or "Enable decks",
                 ref_table = PL_UTIL.config,
                 ref_value = 'decks_enabled'
               },
               create_toggle {
-                label = "Enable seals",
+                label = localize('pl_config_seals') or "Enable seals",
                 ref_table = PL_UTIL.config,
                 ref_value = 'seals_enabled',
               },
               create_toggle {
-                label = "Enable Spectral cards",
+                label = localize('pl_config_spectral_cards') or "Enable Spectral cards",
                 ref_table = PL_UTIL.config,
                 ref_value = 'spectral_cards_enabled',
               },
               create_toggle {
-                label = "Enable Vouchers",
+                label = localize('pl_config_vouchers') or "Enable Vouchers",
                 ref_table = PL_UTIL.config,
                 ref_value = 'vouchers_enabled'
               },
@@ -104,7 +104,7 @@ end
 SMODS.current_mod.extra_tabs = function()
   local scale = 0.5
   return {
-    label = "Credits",
+    label = localize('b_credits') or "Credits",
     tab_definition_function = function()
     return {
       n = G.UIT.ROOT,
@@ -124,7 +124,7 @@ SMODS.current_mod.extra_tabs = function()
         {
           n = G.UIT.T,
           config = {
-          text = "Programming: IcebergLettuce, NachitoSMO",
+          text = localize("pl_credits_programming") or "Programming: IcebergLettuce, NachitoSMO",
           shadow = false,
           scale = scale,
           colour = G.C.GREEN
@@ -142,7 +142,7 @@ SMODS.current_mod.extra_tabs = function()
         {
           n = G.UIT.T,
           config = {
-          text = "Art: IcebergLettuce",
+          text = localize("pl_credits_art") or "Art: IcebergLettuce",
           shadow = false,
           scale = scale,
           colour = G.C.CHIPS
@@ -160,7 +160,7 @@ SMODS.current_mod.extra_tabs = function()
           {
           n = G.UIT.T,
           config = {
-            text = "Idea Guys: AtomicLight, BurntFrenchToast, TomatoIcecream, SpadeALay",
+            text = localize("pl_credits_idea") or "Idea Guys: AtomicLight, BurntFrenchToast, TomatoIcecream, SpadeALay",
             shadow = false,
             scale = scale,
             colour = G.C.MONEY
