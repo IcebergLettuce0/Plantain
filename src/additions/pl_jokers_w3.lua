@@ -102,7 +102,7 @@ SMODS.Joker {
   discovered = true,
 
   rarity = 2,
-  cost = 5,
+  cost = 6,
 
   calculate = function (self, card, context)
     if context.individual and context.cardarea == G.play then
