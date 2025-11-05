@@ -154,8 +154,8 @@ return {
         name = 'Pop-Up Joker',
         text = {
           '{C:green}#1# in #2#{} chance to',
-          'add a random {C:attention}Booster Pack',
-          'to the shop after {C:attention}reroll'
+          'refill 1 {C:attention}Booster Pack',
+          'in shop on {C:attention}reroll'
         }
       },
       j_pl_lamp = {
