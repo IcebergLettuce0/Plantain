@@ -1,6 +1,15 @@
 return {
   descriptions = {
-    --Back={},
+    Back={
+      b_pl_sponsored = {
+        name = "Sponsored Deck",
+        text = {
+          'Start run with',
+          '{C:attention,T:v_pl_ad_break}Ad Break{},',
+          '{C:attention}-1{} shop slot'
+        }
+      },
+    },
     --Blind={},
     --Edition={},
     --Enhanced={},
@@ -138,15 +147,15 @@ return {
         name = 'Croissant',
         text = {
           'Retrigger next {C:attention}#1#',
-          'hand upgrades'
+          '{C:planet}Planet{} cards'
         }
       },
       j_pl_pop_up_joker = {
         name = 'Pop-Up Joker',
         text = {
           '{C:green}#1# in #2#{} chance to',
-          'add a random {C:attention}Booster Pack',
-          'to the shop after {C:attention}reroll'
+          'refill 1 {C:attention}Booster Pack',
+          'in shop on {C:attention}reroll'
         }
       },
       j_pl_lamp = {
@@ -171,8 +180,8 @@ return {
         name = 'Hot Air Balloon',
         text = {
           'Earn {C:money}$#1#{} at end of round',
-          'Payout increases by {C:money}$#2#{} when',
-          '{C:tarot}Tarot{} card used, with a {C:green}#3# in #4#',
+          'When {C:tarot}Tarot{} card used, increase',
+          'payout by {C:money}$#2#{}, with {C:green}#3# in #4#{}',
           'chance this card is {C:attention}destroyed'
         }
       },
@@ -218,6 +227,49 @@ return {
           'per card {C:attention}sold'
         }
       },
+      j_pl_early_man = {
+        name = 'Early Man',
+        text = {
+          'Create a copy of',
+          '{C:tarot}The Wheel of Fortune',
+          'when {C:attention}Blind{} selected'
+        }
+      },
+      j_pl_archaeologist = {
+        name = 'Archaeologist',
+        text = {
+          'Each card held in',
+          'hand with {V:1}#1#{} suit',
+          'gives {C:chips}+#2#{} Chips,',
+          '{s:0.8}suit changes at end of round'
+        }
+      },
+      j_pl_game_cartridge = {
+        name = 'Game Cartridge',
+        text = {
+          'First played {C:attention}2{}, {C:attention}4{}, and {C:attention}8',
+          '{C:attention}each{} give {X:mult,C:white}X#1#{} Mult',
+          'when scored'
+        }
+      },
+      j_pl_dunce = {
+        name = 'Dunce',
+        text = {
+          'Played cards give',
+          '{C:mult}+#1#{} Mult',
+          '{C:attention}minus their rank',
+          'when scored'
+        }
+      },
+      j_pl_extraterrestrial_joker = {
+        name = 'Extraterrestrial Joker',
+        text = {
+          'When {C:attention}Blind{} selected,',
+          '{C:attention}destroy all consumables{} and',
+          'upgrade {C:attention}most played{} hand',
+          '{C:inactive}(Currently {C:attention}#1#{C:inactive})'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
@@ -252,7 +304,22 @@ return {
     --Stake={},
     --Tag={},
     --Tarot={},
-    -- Voucher = {},
+    Voucher = {
+      v_pl_ad_break = {
+        name = 'Ad Break',
+        text = {
+          '{C:attention}+1{} pack',
+          'available in shop'
+        }
+      },
+      v_pl_product_placement = {
+        name = 'Product Placement',
+        text = {
+          'Reroll all {C:attention}unopened',
+          'packs on reroll'
+        }
+      },
+    },
   },
   misc = {
     dictionary = {

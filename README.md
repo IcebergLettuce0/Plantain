@@ -1,18 +1,20 @@
-![Plantain Wave 2 Logo](https://github.com/IcebergLettuce0/Plantain/blob/dev/content/logo2.png?raw=true)
+![Plantain Logo](https://github.com/IcebergLettuce0/Plantain/blob/dev/content/logo3.png?raw=true)
 
-An aggressively vanilla Balatro content mod.
+An aggressively vanilla Balatro content mod, by TeamToaster.
 
 *Requires the latest version of [Steamodded!](https://github.com/Steamopollys/Steamodded)*
 
 ## PLANTAIN
 
-Plantain is a vanilla Balatro content mod that adds 25 all new Jokers with unique, balanced effects. Great care was taken to make sure these new additions fit the balance, design philosophies, and artstyle of the base game as closely as possible. Feedback? Bug reports? Fun synergies you want to show off? [Come chat on our thread in the official Balatro Discord!](https://discord.com/channels/1116389027176787968/1341225182882299955)
+Plantain is a vanilla Balatro content mod that adds 30 all-new Jokers with unique, balanced effects, as well as new Spectral cards, vouchers, and a deck. Great care was taken to make sure these new additions fit the balance, design philosophies, and artstyle of the base game as closely as possible. Feedback? Bug reports? Fun synergies you want to show off? [Come chat on our thread in the official Balatro Discord!](https://discord.com/channels/1116389027176787968/1341225182882299955)
 
 ## ADDITIONS
 
 Plantain currently adds:
-  - 25 new Jokers
+  - 30 new Jokers
+  - 1 new deck
   - 2 new Spectral cards
+  - 2 new vouchers
 
 ## CREDITS
  
@@ -27,8 +29,12 @@ Plantain currently adds:
    - TomatoIcecream
    - SpadeALay
  - SPECIAL THANKS
-   - #fanart on the Balatro Discord
+   - #fan-art on the Balatro Discord
    - localthunk
+
+## USAGE
+
+Feel free to use and modify Plantain for any personal projects or modpacks, with credit.
   
 ## OTHER COOL VANILLA STYLE MODS
  - [Cosmos](https://github.com/neatoqueen/Cosmos)

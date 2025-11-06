@@ -10,27 +10,46 @@ end
 
 function PL_UTIL.add_booster_pack()
   if not G.shop then return end
-  local pack_watch = {}
-  for k, v in pairs(G.P_CENTERS) do
-    if v.set == 'Booster' then
-      table.insert(pack_watch, k)
-    end
-  end
-  local pack_chosen = pseudorandom_element(pack_watch, pseudoseed('pl_pop_up'))
-  local pack = Card(
-    G.shop_booster.T.x + G.shop_booster.T.w / 2,
-    G.shop_booster.T.y,
-    G.CARD_W * 1.27, G.CARD_H * 1.27,
-    G.P_CARDS.empty,
-    G.P_CENTERS[pack_chosen],
-    { bypass_discovery_center = true, bypass_discovery_ui = true }
-  )
-  if price then
-    pack.cost = price
-  end
+  local pack = SMODS.create_card({ set = 'Booster', key_append = 'pl_popup'..G.GAME.round_resets.ante })
+  pack.T.w = G.CARD_W * 1.27
+  pack.T.h = G.CARD_H * 1.27
+  
+  G.shop_booster:emplace(pack)
+
   create_shop_card_ui(pack, 'Booster', G.shop_booster)
   pack:start_materialize()
-  G.shop_booster:emplace(pack)
+  pack:set_card_area(G.shop_booster)
+  pack:juice_up()
+end
+
+function PL_UTIL.reroll_booster_packs()
+  if not G.shop then return end
+
+  local pack_count = #G.shop_booster.cards
+
+  if pack_count <= 0 then return end
+
+  for i=1, pack_count do
+  
+    local booster_to_replace = G.shop_booster.cards[i]
+
+    local pack = SMODS.create_card({ set = 'Booster', key_append = 'pl_booster_reroll'..G.GAME.round_resets.ante })
+    pack.T.w = G.CARD_W * 1.27
+    pack.T.h = G.CARD_H * 1.27
+
+    table.insert(G.shop_booster.cards, i, pack)
+
+    create_shop_card_ui(pack, 'Booster', G.shop_booster)
+    pack:start_materialize()
+    pack:set_card_area(G.shop_booster)
+    pack:juice_up()
+
+    local c = G.shop_booster:remove_card(booster_to_replace)
+    c:remove()
+    c = nil
+
+  end
+
 end
 
 NametagCompatible = {}

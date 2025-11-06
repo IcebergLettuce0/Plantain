@@ -1,6 +1,15 @@
 return {
   descriptions = {
-    --Back={},
+    Back={
+      b_pl_sponsored = {
+        name = "Baraja Promocional",
+        text = {
+          'Comienzas con el vale',
+          '{C:attention,T:v_pl_ad_break}Corte Comercial{},',
+          '{C:attention}-1{} Ranura en la tienda'
+        }
+      },
+    },
     --Blind={},
     --Edition={},
     --Enhanced={},
@@ -214,6 +223,47 @@ return {
           'cuando {C:money}vendes{} cartas'
         }
       },
+      j_pl_early_man = {
+        name = 'Hombre Primitivo',
+        text = {
+          'Crea una copia de la',
+          '{C:tarot}Rueda de la Fortuna',
+          'al seleccionar una {C:attention}Ciega{}'
+        }
+      },
+      j_pl_archaeologist = {
+        name = 'Arqueólogo',
+        text = {
+          'Cada carta en mano que',
+          'sea del palo {V:1}#1#{}',
+          'otorga {C:chips}+#2#{} Fichas,',
+          '{C:inactive,s:0.8}El palo cambia al final de la ronda'
+        }
+      },
+      j_pl_game_cartridge = {
+        name = 'Cartucho de Juego',
+        text = {
+          'Tu primer {C:attention}2{}, {C:attention}4{} y {C:attention}8{} {C:attention}anotados{}',
+          'otorgan {X:mult,C:white}X#1#{} Multi',
+        }
+      },
+      j_pl_dunce = {
+        name = 'Comodín Zonzo',
+        text = {
+          'Las cartas anotadas',
+          'otorgan {C:mult}+#1#{} Multi',
+          '{C:attention}menos sus fichas',
+        }
+      },
+      j_pl_extraterrestrial_joker = {
+        name = 'Comodín Extraterrestre',
+        text = {
+          'Al seleccionar una {C:attention}Ciega{}, {C:red}destruye{}',
+          'todos tus consumibles y sube de {C:planet}nivel{}',
+          'tu mano {C:attention}más jugada{}',
+          '{C:inactive,s:0.8}(Actualmente {C:attention,s:0.8}#1#{C:inactive,s:0.8})'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
@@ -237,8 +287,8 @@ return {
       c_pl_spec_rebirth = {
         name = 'Renacimiento',
         text = {
-          'Selecciona {C:attention}3{} cartas, {C:red}destruye',
-          'la carta del {C:attention}medio{} otorga su categoría',
+          'Selecciona {C:attention}3{} cartas, {C:red}destruye{} la',
+          'carta del {C:attention}medio{} otorga su categoría',
           'a las cartas {C:attention}adyacentes{}',
           '{C:inactive}(Arrastra para reordenar)'
         }
@@ -247,7 +297,23 @@ return {
     --Stake={},
     --Tag={},
     --Tarot={},
-    -- Voucher = {},
+    Voucher = {
+      v_pl_ad_break = {
+        name = 'Corte Comercial',
+        text = {
+          '{C:attention}+1{} Paquete potenciador',
+          'en la tienda'
+        }
+      },
+      v_pl_product_placement = {
+        name = 'Emplazamiento Publicitario',
+        text = {
+          '{C:green}Renueva{} los paquetes',
+          'potenciadores que aún',
+          "no has abierto"
+        }
+      },
+    },
   },
   misc = {
     dictionary = {
