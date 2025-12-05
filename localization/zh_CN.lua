@@ -257,9 +257,9 @@ return {
         name = '劣等生',
         text = {
           '打出的牌在计分时',
-          '给予{C:mult}+#1#{}倍率',
-          '{C:attention}降低{}所有',
-          '记分牌的点数'
+          '给予{C:mult}+#1#{}',
+          '{C:attention}减去牌的点数',
+          '的倍率'
         }
       },
       j_pl_extraterrestrial_joker = {
