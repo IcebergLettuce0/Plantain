@@ -143,7 +143,7 @@ return {
                 text = {
                     "每次{C:attention}重掷{}有",
                     "{C:green}#1#/#2#{}概率",
-                    "在商店中加一{C:attention}补充包{}"
+                    "在商店中填充一{C:attention}补充包{}"
                 }
             },
             j_pl_lamp = {
