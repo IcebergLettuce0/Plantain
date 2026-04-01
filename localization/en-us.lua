@@ -9,6 +9,15 @@ return {
           '{C:attention}-1{} shop slot'
         }
       },
+      b_pl_honeycomb = {
+        name = "Honeycomb Deck",
+        text = {
+          'At end of round,',
+          'Remaining {C:blue}hands{} give {C:money}$0',
+          'but {C:red}+1{} discard for',
+          'next round'
+        }
+      },
     },
     --Blind={},
     --Edition={},
@@ -270,6 +279,30 @@ return {
           '{C:inactive}(Currently {C:attention}#1#{C:inactive})'
         }
       },
+      j_pl_graffiti = {
+        name = 'Graffiti',
+        text = {
+          '{C:mult}+#1#{} Mult if',
+          'played hand contains',
+          'an {C:attention}enhanced{} card'
+        }
+      },
+      j_pl_automaton = {
+        name = 'Automaton',
+        text = {
+          'After a {C:attention}face{} card',
+          'scores, the {C:attention}next non-face',
+          'card is retriggered {C:attention}twice'
+        }
+      },
+      j_pl_lemonade_stand = {
+        name = 'Lemonade Stand',
+        text = {
+          'Increase {C:attention}shop{} size by {C:attention}#1#',
+          'Decrease by {C:attention}#2#{} at the',
+          'end of the {C:attention}shop'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
@@ -339,6 +372,8 @@ return {
       pl_pop_up_joker_winner_4 = 'Free Antivirus!',
       pl_hot_air_balloon_pop = 'Pop!',
       pl_lasagna_mama_mia = 'Mama Mia!',
+      pl_lemonade_stand_decrease = '-1 Shop Size',
+      pl_lemonade_stand_sold_out = 'Sold Out!',
     },
   --achievement_descriptions={},
   -- achievement_names={},
@@ -356,7 +391,9 @@ return {
   --  ranks={},
   -- suits_plural={},
   -- suits_singular={},
-  --  v_dictionary={},
+    v_dictionary={
+      pl_a_discards = "+#1# Discards",
+    },
   -- v_text={},
   },
 }

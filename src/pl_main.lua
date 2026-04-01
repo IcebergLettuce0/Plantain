@@ -23,6 +23,13 @@ SMODS.Atlas {
   px = 71,
   py = 95
 }
+
+SMODS.Atlas {
+  key = 'pl_atlas_w4',
+  path = 'pl_atlas_w4.png',
+  px = 71,
+  py = 95
+}
   
 SMODS.Atlas{
   key = "pl_atlas_consumables",
@@ -177,6 +184,7 @@ end
 SMODS.load_file('src/additions/pl_jokers_w1.lua')()
 SMODS.load_file('src/additions/pl_jokers_w2.lua')()
 SMODS.load_file('src/additions/pl_jokers_w3.lua')()
+SMODS.load_file('src/additions/pl_jokers_w4.lua')()
 
 if PL_UTIL.config.decks_enabled then
   SMODS.load_file('src/additions/pl_decks.lua')()
