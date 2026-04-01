@@ -124,7 +124,7 @@ SMODS.current_mod.extra_tabs = function()
         {
           n = G.UIT.T,
           config = {
-          text = "Programming: IcebergLettuce, NachitoSMO",
+          text = "Programming: NachitoSMO (perfect)",
           shadow = false,
           scale = scale,
           colour = G.C.GREEN
@@ -142,7 +142,7 @@ SMODS.current_mod.extra_tabs = function()
         {
           n = G.UIT.T,
           config = {
-          text = "Art: IcebergLettuce",
+          text = "Art: TomatoIcecream",
           shadow = false,
           scale = scale,
           colour = G.C.CHIPS
@@ -160,7 +160,7 @@ SMODS.current_mod.extra_tabs = function()
           {
           n = G.UIT.T,
           config = {
-            text = "Idea Guys: AtomicLight, BurntFrenchToast, TomatoIcecream, SpadeALay",
+            text = "Idea Guys: AtomicLight, BurntFrenchToast, IcebergLettuce, SpadeALay",
             shadow = false,
             scale = scale,
             colour = G.C.MONEY

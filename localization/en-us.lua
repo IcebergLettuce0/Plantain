@@ -24,11 +24,11 @@ return {
         }
       },
       j_pl_postcard = {
-        name = 'Postcard',
+        name = 'Plush Joker',
         text = {
           'Gains {X:mult,C:white}X1{} Mult for',
-          'each {C:attention}Postcard{}',
-          'sold this run',
+          'each {C:attention}Postcard{} er wait',
+          'I mean {C:attention}Plush Joker{} sold this run',
           '{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)',
         }
       },
@@ -37,7 +37,8 @@ return {
         text = {
           'Gains {C:mult}+#1#{} Mult if played hand',
           'has exactly {C:attention}#2#{} cards',
-          '{s:0.8}Chooses between 3, 4, or 5 every round',
+          '{s:0.8}Chooses between 3, 4, or 5 every round,',
+          'available for a subscription of {C:money}$5{} per round',
           '{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)'
         }
       },
@@ -55,7 +56,8 @@ return {
         text = {
           'Earn {C:money}$#1#{} at',
           'end of round, and',
-          'decrease by {C:money}$#2#{}'
+          'decrease by {C:money}$#2#{}',
+          'mmmmmmmm apple pie......'
         }
       },
       j_pl_grape_soda = {
@@ -68,7 +70,7 @@ return {
         }
       },
       j_pl_matryoshka = {
-        name = 'Matryoshka',
+        name = 'Matroyshka',
         text = {
           'Retrigger all scoring',
           'cards if played hand',
@@ -80,7 +82,8 @@ return {
         text = {
           'Retrigger all played',
           'cards {C:attention}without',
-          'enhancements'
+          'enhancements',
+          'its balanced as a common i swear'
         }
       },
       j_pl_crystal_joker = {
@@ -126,12 +129,13 @@ return {
         }
       },
       j_pl_calculator = {
-        name = 'Calculator',
+        name = 'Calc',
         text = {
           'Each played card with',
           '{C:attention}#1#{} rank gives',
           '{X:mult,C:white}X#3#{} Mult when scored',
-          '{s:0.8}Changes to #2# next round'
+          '{s:0.8}Changes to #2# next round',
+          'short for {c:attention}calculator'
         }
       },
       j_pl_raw_meat = {
@@ -159,7 +163,7 @@ return {
         }
       },
       j_pl_lamp = {
-        name = 'Lamp',
+        name = 'Lantern',
         text = {
           '{C:mult}+#2#{} Mult when',
           '{C:attention}Joker{} card sold',
@@ -179,10 +183,19 @@ return {
       j_pl_hot_air_balloon = {
         name = 'Hot Air Balloon',
         text = {
-          'Earn {C:money}$#1#{} at end of round',
-          'When {C:tarot}Tarot{} card used, increase',
-          'payout by {C:money}$#2#{}, with {C:green}#3# in #4#{}',
-          'chance this card is {C:attention}destroyed'
+          'At the completion of the round, you',
+          'shall acquire {C:money}$#1#{}. With the',
+          'use of a {C:tarot}Tarot{} card, this monetary',
+          'value shall be increased by {C:money}$#2#{} to be paid',
+          'out at the end of further rounds. Additionally, upon',
+          'said use of a {C:tarot}Tarot{} card, a {C:green}#3# in #4#{}',
+          'probability will be undertaken. Should this occur,',
+          'this card will immediately be {C:attention}destroyed{}, in',
+          'accordance with the theme of a \"hot air balloon\"',
+          'which could potentially \"pop\". It is worth noting that',
+          'hot air balloons are not often known to pop, and',
+          'that the theme of this card could be confusing; however,',
+          'please use your imagination.'
         }
       },
       j_pl_three_body_problem = {
@@ -211,7 +224,7 @@ return {
         }
       },
       j_pl_quarry = {
-        name = 'Quarry',
+        name = 'Quarry:',
         text = {
           'Gains {X:mult,C:white}X#1#{} Mult each time',
           'a {C:attention}Stone{} card scores, destroy',
@@ -220,7 +233,7 @@ return {
         }
       },
       j_pl_lasagna = {
-        name = 'Lasagna',
+        name = 'Cornucopia',
         text = {
           '{X:mult,C:white}X#1#{} Mult,',
           'loses {X:mult,C:white}X#2#{} Mult',
@@ -249,7 +262,7 @@ return {
         text = {
           'First played {C:attention}2{}, {C:attention}4{}, and {C:attention}8',
           '{C:attention}each{} give {X:mult,C:white}X#1#{} Mult',
-          'when scored'
+          'when scored. SO RETRO!!!'
         }
       },
       j_pl_dunce = {
@@ -275,9 +288,7 @@ return {
       pl_lavender_seal = {
         name = 'Lavender Seal',
         text = {
-            'If {C:attention}discarded hand',
-            'contains this card, do not',
-            'consume a {C:attention}discard'
+            'Gives you a {C:attention}blowjob'
         }
       },
     },

@@ -33,8 +33,6 @@ SMODS.Joker {
   calculate = function(self, card, context)
     if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
       if pseudorandom('plantain') < G.GAME.probabilities.normal/card.ability.extra.real_chance then 
-        G.GAME.pl_plantain_chips = (G.GAME.pl_plantain_chips or card.ability.extra.chips) + card.ability.extra.chips
-        G.GAME.pl_plantain_chance = (G.GAME.pl_plantain_chance or card.ability.extra.chance) + card.ability.extra.chance
         G.E_MANAGER:add_event(Event({
             func = function()
                 play_sound('tarot1')
@@ -134,6 +132,9 @@ SMODS.Joker {
       local valid_cw_size = {3, 4, 5}
       table.remove(valid_cw_size, card.ability.extra.cw_size - 2)
       card.ability.extra.cw_size = pseudorandom_element(valid_cw_size, pseudoseed('crossword'..G.GAME.round_resets.ante)) 
+      return {
+          dollars = -5
+        }
     end
   end
 }
@@ -160,8 +161,8 @@ SMODS.Joker {
     if bingo1 > bingo2 then
       bingo1, bingo2 = bingo2, bingo1
     end
-    card.ability.extra.bingo1 = bingo1
-    card.ability.extra.bingo2 = bingo2
+    card.ability.extra.bingo1 = 6
+    card.ability.extra.bingo2 = 7
 	end,
   calculate = function(self, card, context)
     if context.individual and context.cardarea == G.play then
@@ -313,7 +314,7 @@ SMODS.Joker {
 SMODS.Joker {
   key = 'jim',
   config = { extra = { repetitions = 1 } },
-  rarity = 2,
+  rarity = 1,
   atlas = 'pl_atlas_w1',
   blueprint_compat = true,
   eternal_compat = true,
@@ -403,7 +404,7 @@ SMODS.Joker {
 
 SMODS.Joker {
   key = 'black_cat',
-  rarity = 2,
+  rarity = 3,
   atlas = 'pl_atlas_w1',
   discovered = true,
   blueprint_compat = true,
