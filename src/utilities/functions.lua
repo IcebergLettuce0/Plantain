@@ -62,9 +62,13 @@ function PL_UTIL.AddNametagJokerNames()
       local loc_file = assert(loadstring(NFS.read(mod.path .. 'localization/en-us.lua'))())
       if loc_file and loc_file.descriptions and loc_file.descriptions.Joker then
         for k, v in pairs(loc_file.descriptions.Joker) do
-          if v.name then
-            if string.find(v.name, "Joker") or string.find(v.name, "joker") then
-              NametagCompatible[k] = k
+          if type(v.name) == "string" and (string.find(v.name, "Joker") or string.find(v.name, "joker")) then
+            NametagCompatible[k] = k
+          elseif type(v.name) == "table" then
+            for _, line in ipairs(v) do
+              if type(line) == "string" and (string.find(line, "Joker") or string.find(line, "joker")) then
+                NametagCompatible[k] = k
+              end
             end
           end
         end
