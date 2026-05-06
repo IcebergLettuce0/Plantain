@@ -12,6 +12,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     info_queue[#info_queue + 1] = G.P_CENTERS.c_wheel_of_fortune
   end,
+  attributes = {'generation', 'tarot'},
 
   rarity = 1,
   cost = 3,
@@ -47,6 +48,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return {vars = { localize(card.ability.extra.suit, 'suits_singular'), card.ability.extra.chips, colours = {G.C.SUITS[card.ability.extra.suit]}}}
   end,
+  attributes = {'chips', 'suit'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -95,6 +97,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return {vars = { card.ability.extra.xmult }}
   end,
+  attributes = {'xmult', 'rank', 'two', 'four', 'eight'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -142,6 +145,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return {vars = { card.ability.extra.mult }}
   end,
+  attributes = {'mult', 'rank'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -181,6 +185,7 @@ SMODS.Joker {
       return { vars = { localize('k_none') } }
     end
   end,
+  attributes = {'destroy_card', 'hand_level'},
 
   blueprint_compat = true,
   eternal_compat = true,

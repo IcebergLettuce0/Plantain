@@ -2,6 +2,7 @@ SMODS.Joker {
   key = 'plantain',
   config = { 
     extra = {chips = 80, chance = 4} },
+  attributes = {'chips', 'chance', 'food'},
   rarity = 1,
   atlas = 'pl_atlas_w1',
   blueprint_compat = true,
@@ -81,6 +82,7 @@ SMODS.Joker {
   cost = 2,
   discovered = true,
   config = { extra = { Xmult = 1 } },
+  attributes = {'xmult', 'scaling', 'on_sell'},
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.Xmult + (G.GAME.pl_postcards_sold or 0) } }
   end,
@@ -110,6 +112,7 @@ SMODS.Joker {
   perishable_compat = false,
   pos = { x = 2, y = 0 },
   config = { extra = { mult_mod = 1, cw_size = 1 , mult = 0} },
+  attributes = {'mult', 'scaling'},
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.mult_mod, card.ability.extra.cw_size, card.ability.extra.mult} }
   end,
@@ -149,6 +152,7 @@ SMODS.Joker {
   cost = 5,
   discovered = true,
   config = { extra = { mult = 5, chips = 25, bingo1 = 3, bingo2 = 7 } },
+  attributes = {'mult', 'chips', 'rank'},
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.bingo1, card.ability.extra.bingo2, card.ability.extra.chips, card.ability.extra.mult } }
   end,
@@ -190,6 +194,7 @@ SMODS.Joker {
 SMODS.Joker {
   key = 'apple_pie',
   config = { extra = { money = 6, money_loss = 1 } },
+  attributes = {'economy', 'scaling', 'food'},
   rarity = 1,
   atlas = 'pl_atlas_w1',
   blueprint_compat = false,
@@ -244,6 +249,7 @@ SMODS.Joker {
   rarity = 2,
   atlas = 'pl_atlas_w1',
   config = { extra = { should_destroy = true } },
+  attributes = {'skip', 'tag', 'food'},
   discovered = true,
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.should_destroy } }
@@ -289,6 +295,7 @@ SMODS.Joker {
 SMODS.Joker {
   key = 'matryoshka',
   config = { extra = { repetitions = 1 } },
+  attributes = {'retrigger', 'hand_type'},
   rarity = 2,
   atlas = 'pl_atlas_w1',
   blueprint_compat = true,
@@ -313,6 +320,7 @@ SMODS.Joker {
 SMODS.Joker {
   key = 'jim',
   config = { extra = { repetitions = 1 } },
+  attributes = {'retrigger', 'enhancements'},
   rarity = 2,
   atlas = 'pl_atlas_w1',
   blueprint_compat = true,
@@ -346,6 +354,7 @@ SMODS.Joker {
   pos = { x = 3, y = 1 },
   cost = 6,
   enhancement_gate = 'm_stone',
+  attributes = {'generation', 'tarot', 'enhancements'},
   loc_vars = function(self, info_queue, card)
     info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
   end,
@@ -381,6 +390,7 @@ SMODS.Joker {
 SMODS.Joker {
   key = 'el_dorado',
   config = { extra = { money_mod = 3 } },
+  attributes = {'economy', 'enhancements', 'full_deck'},
   rarity = 2,
   discovered = true,
   atlas = 'pl_atlas_w1',
@@ -410,6 +420,7 @@ SMODS.Joker {
   eternal_compat = true,
   perishable_compat = false,
   config = { extra = { chips_mod = 13, chips = 0 } },
+  attributes = {'chips', 'enhancements', 'scaling'}, -- i would also add 'chance' but lucky cat from vanilla doesn't so i won't for consistency
   loc_vars = function(self, info_queue, card)
     info_queue[#info_queue + 1] = G.P_CENTERS.m_lucky
     return { vars = { card.ability.extra.chips_mod , card.ability.extra.chips } }
@@ -449,6 +460,7 @@ SMODS.Joker {
   perishable_compat = true,
   pos = { x = 1, y = 2 },
   cost = 8,
+  attributes = {'generation'},
   calculate = function(self, card, context)
     if context.cardarea == G.jokers and context.before and #G.hand.cards > 0 then
       local removed_card = pseudorandom_element(G.hand.cards, pseudoseed('mossy_joker'))
@@ -479,6 +491,7 @@ SMODS.Joker {
   cost = 8,
   discovered = true,
   config = { extra = { Xmult = 2 } },
+  attributes = {'xmult', 'joker'},
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.Xmult } }
   end,
@@ -520,6 +533,7 @@ SMODS.Joker {
   cost = 7,
   discovered = true,
   config = { extra = { is_odd = 'pl_even', next_round = 'pl_odd', Xmult = 1.5} },
+  attributes = {'xmult', 'rank'},
   loc_vars = function(self, info_queue, card)
     return { vars = { localize(card.ability.extra.is_odd), localize(card.ability.extra.next_round), card.ability.extra.Xmult} }
   end,
@@ -550,6 +564,8 @@ SMODS.Joker {
   end
 }
 
+SMODS.attribute {key = 'ante'}
+
 SMODS.Joker {
   key = 'raw_meat',
   rarity = 3,
@@ -558,6 +574,7 @@ SMODS.Joker {
   eternal_compat = false,
   perishable_compat = true,
   config = { extra = { minus_ante = -1, reduce_ante = "pl_inactive" } },
+  attributes = {'ante', 'boss_blind', 'on_sell'},
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.minus_ante, localize(card.ability.extra.reduce_ante) } }
   end,

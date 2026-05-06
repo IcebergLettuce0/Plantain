@@ -9,6 +9,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.upgrades_left } }
   end,
+  attributes = {'retrigger', 'planet', 'food'},
 
   blueprint_compat = true,
   eternal_compat = false,
@@ -54,6 +55,7 @@ SMODS.Joker {
   end
 }
 
+SMODS.Attribute {key = 'booster'}
 SMODS.Joker {
   key = 'pop_up_joker',
   atlas = 'pl_atlas_w2',
@@ -64,6 +66,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.chance} }
   end,
+  attributes = {'chance', 'reroll', 'generation', 'booster', 'shop'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -111,6 +114,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain, card.ability.extra.mult_loss } }
   end,
+  attributes = {'mult', 'scaling', 'on_sell'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -153,6 +157,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.chips_mod, card.ability.extra.chips } }
   end,
+  attributes = {'chips', 'scaling', 'discard', 'hand_type'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -203,6 +208,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.money, card.ability.extra.money_mod, (G.GAME.probabilities.normal or 1), card.ability.extra.chance } }
   end,
+  attributes = {'economy', 'tarot', 'chance'},
 
   blueprint_compat = false,
   eternal_compat = false,
@@ -262,6 +268,7 @@ SMODS.Joker {
       return { vars = { localize('k_none') } }
     end
   end,
+  attributes = {'hand_type', 'hand_level'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -304,6 +311,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.chance } }
   end,
+  attributes = {'retrigger', 'chance', 'rank', 'ace'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -340,6 +348,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
   end,
+  attributes = {'xmult', 'scaling', 'suit'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -378,6 +387,7 @@ SMODS.Joker {
     info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
     return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
   end,
+  attributes = {'xmult', 'scaling', 'enhancements', 'destroy_card'},
 
   blueprint_compat = true,
   eternal_compat = true,
@@ -413,6 +423,7 @@ SMODS.Joker {
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.Xmult, card.ability.extra.Xmult_loss } }
   end,
+  attributes = {'xmult', 'scaling', 'food'},
 
   blueprint_compat = true,
   eternal_compat = false,
