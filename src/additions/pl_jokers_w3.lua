@@ -63,12 +63,11 @@ SMODS.Joker {
   calculate = function (self, card, context)
     if context.cardarea == G.hand and not context.end_of_round and context.individual and not context.repetition and context.other_card:is_suit(card.ability.extra.suit) then
       return {
-        chip_mod = card.ability.extra.chips,
+        chips = card.ability.extra.chips,
         card = context.other_card,
-        message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }
       }
     end
-    if context.end_of_round and not context.repetition and not context.individual then
+    if context.end_of_round and context.main_eval then
       local suits = {'Diamonds', 'Clubs', 'Hearts', 'Spades'}
       for k, v in ipairs(suits) do
         if v == card.ability.extra.suit then

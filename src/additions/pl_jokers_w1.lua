@@ -47,11 +47,9 @@ SMODS.Joker {
         }
       end
     end
-    if context.joker_main and context.cardarea == G.jokers then
-      return 
-      {
-        chip_mod = card.ability.extra.real_chips,
-        message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.real_chips } }
+    if context.joker_main then
+      return {
+        chips = card.ability.extra.real_chips
       }
     end
   end
@@ -70,17 +68,16 @@ SMODS.Joker {
   config = { extra = { Xmult = 1 } },
   attributes = {'xmult', 'scaling', 'on_sell'},
   loc_vars = function(self, info_queue, card)
-    return { vars = { card.ability.extra.Xmult + (G.GAME.pl_postcards_sold or 0) } }
+    return { vars = { card.ability.extra.Xmult * ((G.GAME.pl_postcards_sold or 0) + 1) } }
   end,
   calculate = function(self, card, context)
     if context.selling_self then
       G.GAME.pl_postcards_sold = (G.GAME.pl_postcards_sold or 0) + 1
     end
-    if context.joker_main and context.cardarea == G.jokers then
+    if context.joker_main then
       if G.GAME.pl_postcards_sold ~= nil then
         return {
-          Xmult_mod = card.ability.extra.Xmult + G.GAME.pl_postcards_sold,
-          message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult + G.GAME.pl_postcards_sold } }
+          xmult = card.ability.extra.Xmult * ((G.GAME.pl_postcards_sold or 0) + 1),
         }
       end
     end
@@ -107,7 +104,7 @@ SMODS.Joker {
     card.ability.extra.cw_size = pseudorandom_element(valid_cw_size, pseudoseed('crossword'..G.GAME.round_resets.ante)) 
 	end,
   calculate = function(self, card, context)
-    if context.cardarea == G.jokers and context.before and #context.full_hand == card.ability.extra.cw_size and not context.blueprint then
+    if context.before and #context.full_hand == card.ability.extra.cw_size and not context.blueprint then
       SMODS.scale_card(card, {
         ref_table = card.ability.extra,
         ref_value = 'mult',
@@ -116,15 +113,14 @@ SMODS.Joker {
       })
       return nil, true
     end
-    if context.joker_main and context.cardarea == G.jokers then
+    if context.joker_main then
       if card.ability.extra.mult > 0 then
         return {
-          mult_mod = card.ability.extra.mult,
-          message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+          mult = card.ability.extra.mult
         }
       end
     end
-    if context.end_of_round and not context.repetition and not context.individual then
+    if context.end_of_round and context.main_eval then
       local valid_cw_size = {3, 4, 5}
       table.remove(valid_cw_size, card.ability.extra.cw_size - 2)
       card.ability.extra.cw_size = pseudorandom_element(valid_cw_size, pseudoseed('crossword'..G.GAME.round_resets.ante)) 
@@ -168,7 +164,7 @@ SMODS.Joker {
         }
       end
     end
-    if context.end_of_round and not context.repetition and not context.individual then
+    if context.end_of_round and context.main_eval then
       local numbers = {2, 3, 4, 5, 6, 7, 8, 9, 10}
       local bingo1 = pseudorandom_element(numbers, pseudoseed('bingo'..G.GAME.round_resets.ante))
       table.remove(numbers, bingo1 - 1)
@@ -291,9 +287,7 @@ SMODS.Joker {
     if context.cardarea == G.play and context.repetition and not context.repetition_only then
       if next(context.poker_hands['Straight']) then
         return {
-          message = localize("k_again_ex"),
-          repetitions = card.ability.extra.repetitions,
-          card = card,
+          repetitions = card.ability.extra.repetitions
         }
       end
     end
@@ -317,9 +311,7 @@ SMODS.Joker {
       if context.other_card.ability.set ~= 'Enhanced' then
         return 
         {
-          message = localize("k_again_ex"),
-          repetitions = card.ability.extra.repetitions,
-          card = card, 
+          repetitions = card.ability.extra.repetitions
         }
       end
     end
@@ -342,7 +334,7 @@ SMODS.Joker {
     info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
   end,
   calculate = function(self, card, context)
-    if context.after and context.cardarea == G.jokers then
+    if context.after then
       local stone = false
       for i = 1, #context.scoring_hand do
         if SMODS.has_enhancement(context.scoring_hand[i], 'm_stone') then
@@ -422,14 +414,10 @@ SMODS.Joker {
       end
     end
 
-    if context.joker_main and context.cardarea == G.jokers then
-      if card.ability.extra.chips > 0 then
-        return 
-        {
-          chip_mod = card.ability.extra.chips,
-          message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }
-        }
-      end
+    if context.joker_main then
+      return {
+        chips = card.ability.extra.chips
+      }
     end
   end
 }
@@ -447,7 +435,7 @@ SMODS.Joker {
   cost = 8,
   attributes = {'generation'},
   calculate = function(self, card, context)
-    if context.cardarea == G.jokers and context.before and #G.hand.cards > 0 then
+    if context.before and #G.hand.cards > 0 then
       local removed_card = pseudorandom_element(G.hand.cards, pseudoseed('mossy_joker'))
       local copied_card = pseudorandom_element(context.scoring_hand, pseudoseed('mossy_joker'))
       removed_card:flip()
@@ -499,8 +487,7 @@ SMODS.Joker {
         end
       }))
       return {
-        message = localize{type = 'variable',key = 'a_xmult', vars = { card.ability.extra.Xmult } },
-        Xmult_mod = card.ability.extra.Xmult,
+        xmult = card.ability.extra.Xmult,
         focus = context.other_joker
       }
     end
@@ -523,7 +510,7 @@ SMODS.Joker {
     return { vars = { localize(card.ability.extra.is_odd), localize(card.ability.extra.next_round), card.ability.extra.Xmult} }
   end,
   calculate = function(self, card, context)
-    if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+    if context.end_of_round and context.main_eval and not context.blueprint then
       card.ability.extra.is_odd, card.ability.extra.next_round = card.ability.extra.next_round, card.ability.extra.is_odd
     end
 
@@ -570,7 +557,7 @@ SMODS.Joker {
     Food = true
   },
   calculate = function(self, card, context)
-    if context.end_of_round and G.GAME.blind.boss and not context.repetition and not context.individual and not context.blueprint then
+    if context.end_of_round and G.GAME.blind.boss and context.main_eval and not context.blueprint then
       card.ability.extra.reduce_ante = "pl_active"
       local eval = function(card) return not card.REMOVED end
       juice_card_until(card, eval, true)

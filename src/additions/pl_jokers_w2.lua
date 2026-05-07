@@ -120,7 +120,7 @@ SMODS.Joker {
       return nil, true
     end
     
-    if context.end_of_round and not context.blueprint and not context.repetition and not context.individual and card.ability.extra.mult > 0 then
+    if context.end_of_round and not context.blueprint and context.main_eval and card.ability.extra.mult > 0 then
       SMODS.scale_card(card, {
         ref_table = card.ability.extra,
         ref_value = 'mult',
@@ -131,13 +131,10 @@ SMODS.Joker {
       return nil, true
     end
 
-    if context.joker_main and context.cardarea == G.jokers then
-      if card.ability.extra.mult > 0 then
-        return {
-          mult_mod = card.ability.extra.mult,
-          message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
-        }
-      end
+    if context.joker_main then
+      return {
+        mult = card.ability.extra.mult
+      }
     end
   end
 }
@@ -185,13 +182,10 @@ SMODS.Joker {
       end
     end
 
-    if context.joker_main and context.cardarea == G.jokers then
-      if card.ability.extra.chips > 0 then
-        return {
-          chip_mod = card.ability.extra.chips,
-          message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }
-        }
-      end
+    if context.joker_main then
+      return {
+        chips = card.ability.extra.chips
+      }
     end
   end
 }
@@ -269,7 +263,7 @@ SMODS.Joker {
   end,
 
   calculate = function(self, card, context)
-    if context.before and context.cardarea == G.jokers then
+    if context.before then
       if (context.scoring_name == 'Three of a Kind') and not (card.ability.extra.last_hand == 'none') then
         return {
           message = localize('k_level_up_ex'),
@@ -278,7 +272,7 @@ SMODS.Joker {
         }
       end
     end
-    if context.cardarea == G.jokers and context.joker_main then
+    if context.joker_main then
       card.ability.extra.last_hand = context.scoring_name
     end
   end
@@ -310,11 +304,8 @@ SMODS.Joker {
         if SMODS.pseudorandom_probability(card, 'batteries', 1, card.ability.extra.chance) then 
           retriggers = 2
         end
-        return 
-        {
-          message = localize("k_again_ex"),
-          repetitions = retriggers,
-          card = card, 
+        return {
+          repetitions = retriggers
         }
       end
     end
@@ -341,12 +332,11 @@ SMODS.Joker {
   cost = 5,
 
   calculate = function(self, card, context)
-    if context.joker_main and context.cardarea == G.jokers then
+    if context.joker_main then
       if card.ability.extra.xmult > 1 then
         return 
           {
-            Xmult_mod = card.ability.extra.xmult,
-            message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+            xmult = card.ability.extra.xmult
           }
       end
     end
@@ -397,10 +387,9 @@ SMODS.Joker {
     if context.destroying_card and SMODS.has_enhancement(context.destroying_card, 'm_stone') and not context.blueprint then
       return true
     end
-    if context.joker_main and context.cardarea == G.jokers and card.ability.extra.xmult > 1 then
+    if context.joker_main and card.ability.extra.xmult > 1 then
       return {
-        Xmult_mod = card.ability.extra.xmult,
-        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+        xmult = card.ability.extra.xmult
       }
     end
   end
@@ -449,10 +438,9 @@ SMODS.Joker {
       end
     end
 
-    if context.joker_main and context.cardarea == G.jokers then
+    if context.joker_main then
       return {
-        Xmult_mod = card.ability.extra.Xmult,
-        message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } }
+        xmult = card.ability.extra.Xmult
       }
     end
   end
