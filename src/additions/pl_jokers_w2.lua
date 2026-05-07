@@ -30,22 +30,7 @@ SMODS.Joker {
       if not context.blueprint then
         card.ability.extra.upgrades_left = card.ability.extra.upgrades_left - 1
         if card.ability.extra.upgrades_left <= 0 then
-          G.E_MANAGER:add_event(Event({
-            func = function()
-                play_sound('tarot1')
-                card.T.r = -0.2
-                card:juice_up(0.3, 0.4)
-                card.states.drag.is = true
-                card.children.center.pinch.x = true
-                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-              func = function()
-                G.jokers:remove_card(self)
-                card:remove()
-                card = nil
-              return true; end})) 
-            return true
-          end
-          })) 
+          SMODS.destroy_cards(card, nil, nil, true)
           return {
               message = localize('k_eaten_ex')
           }
@@ -64,7 +49,7 @@ SMODS.Joker {
   
   config = { extra = { chance = 2 } },
   loc_vars = function(self, info_queue, card)
-    return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.chance} }
+    return { vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.chance, 'popup') } }
   end,
   attributes = {'chance', 'reroll', 'generation', 'booster', 'shop'},
 
@@ -79,7 +64,7 @@ SMODS.Joker {
   calculate = function(self, card, context)
     if context.reroll_shop then
       if #G.shop_booster.cards < G.GAME.starting_params.boosters_in_shop + (G.GAME.modifiers.extra_boosters or 0) then
-        if pseudorandom('popup') < G.GAME.probabilities.normal/card.ability.extra.chance then
+        if SMODS.pseudorandom_probability(card, 'popup', 1, card.ability.extra.chance) then
           G.E_MANAGER:add_event(Event {
             func = function()
               PL_UTIL.add_booster_pack()
@@ -125,14 +110,25 @@ SMODS.Joker {
   cost = 5,
 
   calculate = function (self, card, context)
-    if context.pl_selling_joker and not context.blueprint then
-      card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_gain
-      card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult_gain}}})
+    if context.selling_card and context.card.ability.set == 'Joker' and not context.blueprint then
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'mult',
+        scalar_value = 'mult_gain',
+        message_key = 'a_mult'
+      })
+      return nil, true
     end
     
     if context.end_of_round and not context.blueprint and not context.repetition and not context.individual and card.ability.extra.mult > 0 then
-      card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_loss
-      card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra.mult_loss}}})
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'mult',
+        scalar_value = 'mult_loss',
+        operation = '-',
+        message_key = 'a_mult_minus'
+      })
+      return nil, true
     end
 
     if context.joker_main and context.cardarea == G.jokers then
@@ -179,12 +175,13 @@ SMODS.Joker {
         if matches > 1 then pair = true end
       end
       if not pair then
-        card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-        return {
-          message = localize('k_upgrade_ex'),
-          colour = G.C.Chips,
-          card = card
-        }
+        SMODS.scale_card(card, {
+          ref_table = card.ability.extra,
+          ref_value = 'chips',
+          scalar_value = 'chips_mod',
+          message_colour = G.C.CHIPS
+        })
+        return nil, true
       end
     end
 
@@ -206,7 +203,7 @@ SMODS.Joker {
   
   config = { extra = { money = 1, money_mod = 1, chance = 15 } },
   loc_vars = function(self, info_queue, card)
-    return { vars = { card.ability.extra.money, card.ability.extra.money_mod, (G.GAME.probabilities.normal or 1), card.ability.extra.chance } }
+    return { vars = { card.ability.extra.money, card.ability.extra.money_mod, SMODS.get_probability_vars(card, 1, card.ability.extra.chance, 'balloon') } }
   end,
   attributes = {'economy', 'tarot', 'chance'},
 
@@ -225,31 +222,18 @@ SMODS.Joker {
 
   calculate = function(self, card, context)
     if context.using_consumeable and not context.blueprint and not context.repetition and not context.individual and (context.consumeable.ability.set == "Tarot") then
-      if pseudorandom('balloon') < G.GAME.probabilities.normal/card.ability.extra.chance then
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                play_sound('tarot1')
-                card.T.r = -0.2
-                card:juice_up(0.3, 0.4)
-                card.states.drag.is = true
-                card.children.center.pinch.x = true
-                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                    func = function()
-                            G.jokers:remove_card(self)
-                            card:remove()
-                            card = nil
-                        return true; end})) 
-                return true
-            end
-        })) 
+      if SMODS.pseudorandom_probability(card, 'balloon', 1, card.ability.extra.chance) then
+        SMODS.destroy_cards(card, nil, nil, true)
         return {
             message = localize('pl_hot_air_balloon_pop')
         }
       else
-        card.ability.extra.money = card.ability.extra.money + card.ability.extra.money_mod
-        return {
-            message = localize('k_upgrade_ex')
-        }
+        SMODS.scale_card(card, {
+          ref_table = card.ability.extra,
+          ref_value = 'money',
+          scalar_value = 'money_mod'
+        })
+        return nil, true
       end
     end
   end
@@ -287,13 +271,11 @@ SMODS.Joker {
   calculate = function(self, card, context)
     if context.before and context.cardarea == G.jokers then
       if (context.scoring_name == 'Three of a Kind') and not (card.ability.extra.last_hand == 'none') then
-        -- card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.PURPLE})
-        local text = card.ability.extra.last_hand
-        local old_text = context.scoring_name
-        card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_level_up_ex')})
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(text, 'poker_hands'),chips = G.GAME.hands[text].chips, mult = G.GAME.hands[text].mult, level=G.GAME.hands[text].level})
-        level_up_hand(context.blueprint_card or card, text, nil, 1)
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(old_text, 'poker_hands'),chips = G.GAME.hands[old_text].chips, mult = G.GAME.hands[old_text].mult, level=G.GAME.hands[old_text].level})
+        return {
+          message = localize('k_level_up_ex'),
+          level_up = 1,
+          level_up_hand = card.ability.extra.last_hand
+        }
       end
     end
     if context.cardarea == G.jokers and context.joker_main then
@@ -309,7 +291,7 @@ SMODS.Joker {
   
   config = { extra = { chance = 2 } },
   loc_vars = function(self, info_queue, card)
-    return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.chance } }
+    return { vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.chance, 'batteries') } }
   end,
   attributes = {'retrigger', 'chance', 'rank', 'ace'},
 
@@ -325,7 +307,7 @@ SMODS.Joker {
     if context.cardarea == G.play and context.repetition then
       if context.other_card:get_id() == 14 then
         local retriggers = 1
-        if pseudorandom('batteries') < G.GAME.probabilities.normal/card.ability.extra.chance then 
+        if SMODS.pseudorandom_probability(card, 'batteries', 1, card.ability.extra.chance) then 
           retriggers = 2
         end
         return 
@@ -368,9 +350,14 @@ SMODS.Joker {
           }
       end
     end
-    if context.pl_suit_changed and not context.blueprint then
-      card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-      card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('k_upgrade_ex'), colour = G.C.MULT})
+    if context.change_suit and not context.blueprint then
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'xmult',
+        scalar_value = 'xmult_mod',
+        message_colour = G.C.MULT
+      })
+      return nil, true
     end
   end
 }
@@ -398,11 +385,16 @@ SMODS.Joker {
   cost = 6,
 
   calculate = function(self, card, context)
-    if context.cardarea == G.play and context.other_card and context.other_card.ability.effect == 'Stone Card' and context.individual and not context.blueprint then
-      card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-      return { message = localize('k_upgrade_ex'), focus = card, colour = G.C.MULT}
+    if context.cardarea == G.play and context.other_card and SMODS.has_enhancement(context.other_card, 'm_stone') and context.individual and not context.blueprint then
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'xmult',
+        scalar_value = 'xmult_mod',
+        no_message = true
+      })
+      return { message = localize('k_upgrade_ex'), focus = card, colour = G.C.MULT }
     end
-    if context.destroying_card and context.destroying_card.ability.effect == 'Stone Card' and not context.blueprint then
+    if context.destroying_card and SMODS.has_enhancement(context.destroying_card, 'm_stone') and not context.blueprint then
       return true
     end
     if context.joker_main and context.cardarea == G.jokers and card.ability.extra.xmult > 1 then
@@ -439,32 +431,21 @@ SMODS.Joker {
 
   calculate = function (self, card, context)
     if context.selling_card and not context.blueprint then
-      card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.Xmult_loss
-      if card.ability.extra.Xmult <= 1 then
-        G.E_MANAGER:add_event(Event({
-          func = function()
-              play_sound('tarot1')
-              card.T.r = -0.2
-              card:juice_up(0.3, 0.4)
-              card.states.drag.is = true
-              card.children.center.pinch.x = true
-              G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                  func = function()
-                          G.jokers:remove_card(self)
-                          card:remove()
-                          card = nil
-                      return true; end})) 
-              return true
-          end
-        })) 
+      if card.ability.extra.Xmult - card.ability.extra.Xmult_loss <= 1 then
+        SMODS.destroy_cards(card, nil, nil, true)
         return {
           message = localize('pl_lasagna_mama_mia')
         }
       else
-        return {
-          message = localize{type='variable',key='a_xmult_minus',vars={card.ability.extra.Xmult_loss}},
-          colour = G.C.RED
-        }
+        SMODS.scale_card(card, {
+          ref_table = card.ability.extra,
+          ref_value = 'Xmult',
+          scalar_value = 'Xmult_loss',
+          operation = '-',
+          message_key = 'a_xmult_minus',
+          message_colour = G.C.MULT
+        })
+        return nil, true
       end
     end
 

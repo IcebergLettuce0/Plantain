@@ -15,9 +15,10 @@ SMODS.Joker {
     Food = true
   },
   loc_vars = function(self, info_queue, card)
-    return { vars = { (card.ability.extra.real_chips or G.GAME.pl_plantain_chips or card.ability.extra.chips),
-      (G.GAME.probabilities.normal or 1),
-      (card.ability.extra.real_chance or G.GAME.pl_plantain_chance or card.ability.extra.chance),  } }
+    return { vars = {
+      (card.ability.extra.real_chips or G.GAME.pl_plantain_chips or card.ability.extra.chips),
+      SMODS.get_probability_vars(card, 1, card.ability.extra.real_chance or G.GAME.pl_plantain_chance or card.ability.extra.chance, 'plantain')
+    } }
   end,
   add_to_deck = function(self,card,context)
     if G.GAME.pl_plantain_chips == nil then
@@ -33,25 +34,10 @@ SMODS.Joker {
   end,
   calculate = function(self, card, context)
     if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
-      if pseudorandom('plantain') < G.GAME.probabilities.normal/card.ability.extra.real_chance then 
+      if SMODS.pseudorandom_probability(card, 'plantain', 1, card.ability.extra.real_chance) then 
         G.GAME.pl_plantain_chips = (G.GAME.pl_plantain_chips or card.ability.extra.chips) + card.ability.extra.chips
         G.GAME.pl_plantain_chance = (G.GAME.pl_plantain_chance or card.ability.extra.chance) + card.ability.extra.chance
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                play_sound('tarot1')
-                card.T.r = -0.2
-                card:juice_up(0.3, 0.4)
-                card.states.drag.is = true
-                card.children.center.pinch.x = true
-                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                    func = function()
-                            G.jokers:remove_card(self)
-                            card:remove()
-                            card = nil
-                        return true; end})) 
-                return true
-            end
-        })) 
+        SMODS.destroy_cards(card, nil, nil, true)
         return {
             message = localize('pl_plantain_cooked')
         }
@@ -122,8 +108,13 @@ SMODS.Joker {
 	end,
   calculate = function(self, card, context)
     if context.cardarea == G.jokers and context.before and #context.full_hand == card.ability.extra.cw_size and not context.blueprint then
-      card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
-      return { message = localize('k_upgrade_ex'), focus = card, colour = G.C.MULT}
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'mult',
+        scalar_value = 'mult_mod',
+        message_colour = G.C.MULT
+      })
+      return nil, true
     end
     if context.joker_main and context.cardarea == G.jokers then
       if card.ability.extra.mult > 0 then
@@ -218,27 +209,21 @@ SMODS.Joker {
 
   calculate = function(self, card, context)
     if context.pl_cash_out and not context.blueprint then
-      card.ability.extra.money = card.ability.extra.money - card.ability.extra.money_loss
-      if card.ability.extra.money == 0 then
-        G.E_MANAGER:add_event(Event({
-          func = function()
-              play_sound('tarot1')
-              card.T.r = -0.2
-              card:juice_up(0.3, 0.4)
-              card.states.drag.is = true
-              card.children.center.pinch.x = true
-              G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                  func = function()
-                          G.jokers:remove_card(self)
-                          card:remove()
-                          card = nil
-                      return true; end})) 
-              return true
-          end
-        })) 
+      if card.ability.extra.money - card.ability.extra.money_loss <= 0 then
+        SMODS.destroy_cards(card, nil, nil, true)
         card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_apple_pie_sold_out'), colour = G.C.MONEY})
       else
-        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_apple_pie_slice'), colour = G.C.MONEY})
+        SMODS.scale_card(card, {
+          ref_table = card.ability.extra,
+          ref_value = 'money',
+          scalar_value = 'money_loss',
+          operation = '-',
+          scaling_message = {
+            message = localize('pl_apple_pie_slice'),
+            colour = G.C.MONEY
+          }
+        })
+        return nil, true
      end
     end
   end
@@ -266,16 +251,14 @@ SMODS.Joker {
     if context.skip_blind and not context.blueprint then
       G.E_MANAGER:add_event(Event({
         func = function()
-          for i=1, #G.jokers.cards do
-            other_soda = G.jokers.cards[i]
-            if other_soda.ability.name == card.ability.name and other_soda ~= card and card.ability.extra.should_destroy then
+          for _,other_soda in ipairs(SMODS.find_card('j_pl_grape_soda')) do
+            if other_soda ~= card and card.ability.extra.should_destroy then
               other_soda.ability.extra.should_destroy = false
             end
           end
           if card.ability.extra.should_destroy then
             card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_grape_soda_gulp'), colour = G.C.RED})
-            card:start_dissolve({G.C.RED}, card)
-            play_sound('whoosh2')
+            SMODS.destroy_cards(card, nil, nil, nil, {G.C.RED})
             G.E_MANAGER:add_event(Event({delay = 0.2,
               func = function()
                 G.GAME.pl_grape_used = G.GAME.blind_on_deck
@@ -362,26 +345,23 @@ SMODS.Joker {
     if context.after and context.cardarea == G.jokers then
       local stone = false
       for i = 1, #context.scoring_hand do
-        if context.scoring_hand[i].ability.effect == "Stone Card" then stone = true
+        if SMODS.has_enhancement(context.scoring_hand[i], 'm_stone') then
+          stone = true
+          break
+        end
       end
-    end
       if stone and (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
         G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
-        G.E_MANAGER:add_event(Event({
-          trigger = 'before',
-          delay = 0.0,
-          func = (function()
-                  local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, nil, 'sup')
-                  card:add_to_deck()
-                  G.consumeables:emplace(card)
-                  G.GAME.consumeable_buffer = 0
-              return true
-          end)}))
-      return {
+        G.E_MANAGER:add_event(Event({func = function()
+          SMODS.add_card{set = 'Tarot', area = G.consumeables, key_append = 'sup'}
+          G.GAME.consumeable_buffer = 0
+          return true
+        end}))
+        return {
           message = localize('k_plus_tarot'),
           colour = G.C.SECONDARY_SET.Tarot,
           card = card
-      }
+        }
       end
     end
   end
@@ -432,8 +412,13 @@ SMODS.Joker {
   calculate = function(self, card, context)
     if context.cardarea == G.play and context.individual and not context.blueprint then
       if SMODS.has_enhancement(context.other_card, 'm_lucky') and not context.other_card.lucky_trigger then
-        card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
-        return { message = localize('k_upgrade_ex'), focus = card}
+        SMODS.scale_card(card, {
+          ref_table = card.ability.extra,
+          ref_value = 'chips',
+          scalar_value = 'chips_mod',
+          no_message = true
+        })
+        return { message = localize('k_upgrade_ex'), focus = card }
       end
     end
 
@@ -564,7 +549,7 @@ SMODS.Joker {
   end
 }
 
-SMODS.attribute {key = 'ante'}
+SMODS.Attribute {key = 'ante'}
 
 SMODS.Joker {
   key = 'raw_meat',

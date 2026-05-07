@@ -20,16 +20,12 @@ SMODS.Joker {
   calculate = function (self, card, context)
     if context.setting_blind and not (context.blueprint_card or self).getting_sliced and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
       G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
-        G.E_MANAGER:add_event(Event({
-          trigger = 'before',
-          delay = 0.0,
-          func = (function()
-                  local card = create_card('Tarot',G.consumeables, nil, nil, nil, nil, 'c_wheel_of_fortune')
-                  card:add_to_deck()
-                  G.consumeables:emplace(card)
-                  G.GAME.consumeable_buffer = 0
-              return true
-          end)}))
+      G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+      G.E_MANAGER:add_event(Event({func = function()
+        SMODS.add_card{set = 'Tarot', area = G.consumeables, key = 'c_wheel_of_fortune'}
+        G.GAME.consumeable_buffer = 0
+        return true
+      end}))
       return {
           message = localize('k_plus_tarot'),
           colour = G.C.SECONDARY_SET.Tarot,
@@ -196,18 +192,18 @@ SMODS.Joker {
   cost = 8,
 
   calculate = function (self, card, context)
-    if context.cardarea == G.jokers and context.joker_main then
-      self.pl_check_most_played(card)
-    end
     if context.setting_blind then
+      self.pl_check_most_played(card)
       for i=1, #G.consumeables.cards do
         SMODS.destroy_cards(G.consumeables.cards[i])
       end
       if card.ability.extra.most_played_hand then
         card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_upgrade_ex')})
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(card.ability.extra.most_played_hand, 'poker_hands'),chips = G.GAME.hands[card.ability.extra.most_played_hand].chips, mult = G.GAME.hands[card.ability.extra.most_played_hand].mult, level=G.GAME.hands[card.ability.extra.most_played_hand].level})
-        level_up_hand(context.blueprint_card or card, card.ability.extra.most_played_hand, nil, 1)
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        SMODS.upgrade_poker_hands{
+          hands = {card.ability.extra.most_played_hand},
+          from = card
+        }
+        return nil, true
       end
     end
   end,
