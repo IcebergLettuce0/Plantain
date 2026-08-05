@@ -12,29 +12,7 @@ match_indent = true
 pattern = '''G.deck:shuffle('cashout'..G.GAME.round_resets.ante)'''
 position = "after"
 payload = '''
-for i=1, #G.jokers.cards do
-    eval_card(G.jokers.cards[i], {pl_cash_out = true})
-end
-'''
-
-#painterly joker context
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-match_indent = true
-pattern = '''self.config.card = card'''
-position = "before"
-payload = '''
-if self.config.card.suit then
-  if self.config.card.suit ~= card.suit then
-    if G.jokers and G.jokers.cards then
-      for i=1, #G.jokers.cards do
-        eval_card(G.jokers.cards[i], {pl_suit_changed = true})
-      end
-    end
-  end
-end
+SMODS.calculate_context({pl_cash_out = true})
 '''
 
 #lavender seal
@@ -64,28 +42,24 @@ match_indent = true
 pattern = '''add_tag(_tag.config.ref_table)'''
 position = "after"
 payload = '''
-if G.jokers and G.jokers.cards then
-    for i=1, #G.jokers.cards do
-        if G.jokers.cards[i].config.center.key == "j_pl_grape_soda" then
-        G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = function()
-          delay(0.3)
-          SMODS.calculate_context({skip_blind = true})
-          for i = 1, #G.GAME.tags do
-            G.GAME.tags[i]:apply_to_run({type = 'immediate'})
-          end
-          for i = 1, #G.GAME.tags do
-            if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
-          end
-          return true
-        end
-      }))
-      _tag.children[2] = nil
-      _tag.children[1] = nil
-        return 
-        end
+if next(SMODS.find_card('j_pl_grape_soda')) then
+  G.E_MANAGER:add_event(Event({
+    trigger = 'immediate',
+    func = function()
+      delay(0.3)
+      SMODS.calculate_context({skip_blind = true})
+      for i = 1, #G.GAME.tags do
+        G.GAME.tags[i]:apply_to_run({type = 'immediate'})
+      end
+      for i = 1, #G.GAME.tags do
+        if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
+      end
+      return true
     end
+  }))
+  _tag.children[2] = nil
+  _tag.children[1] = nil
+  return
 end
 '''
 
@@ -101,22 +75,6 @@ if G.GAME.pl_grape_used == G.GAME.blind_on_deck then
   _tag_container.children[1] = nil
 else
   G.GAME.pl_grape_used = nil
-end
-'''
-
-#lamp
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-match_indent = true
-pattern = '''G.CONTROLLER.locks.selling_card = true'''
-position = "after"
-payload = '''
-for i=1, #G.jokers.cards do
-  if self.ability.set == 'Joker' then
-    eval_card(G.jokers.cards[i], {pl_selling_joker = true})
-  end
 end
 '''
 
