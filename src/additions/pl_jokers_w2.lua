@@ -95,7 +95,7 @@ SMODS.Joker {
   atlas = 'pl_atlas_w2',
   pos = { x = 2, y = 0 },
   
-  config = { extra = { mult = 3, mult_gain = 3, mult_loss = 1 } },
+  config = { extra = { mult = 0, mult_gain = 2, mult_loss = 1 } },
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.mult, card.ability.extra.mult_gain, card.ability.extra.mult_loss } }
   end,
@@ -146,7 +146,7 @@ SMODS.Joker {
   atlas = 'pl_atlas_w2',
   pos = { x = 3, y = 0 },
   
-  config = { extra = { chips_mod = 5, chips = 0 } },
+  config = { extra = { chips_mod = 7, chips = 0 } },
   loc_vars = function(self, info_queue, card)
     return { vars = { card.ability.extra.chips_mod, card.ability.extra.chips } }
   end,
@@ -370,21 +370,19 @@ SMODS.Joker {
   eternal_compat = true,
   perishable_compat = false,
   discovered = true,
+  enhancement_gate = 'm_stone',
 
-  rarity = 3,
+  rarity = 2,
   cost = 6,
 
   calculate = function(self, card, context)
-    if context.cardarea == G.play and context.other_card and SMODS.has_enhancement(context.other_card, 'm_stone') and context.individual and not context.blueprint then
+    if context.destroying_card and SMODS.has_enhancement(context.destroying_card, 'm_stone') and not context.blueprint then
       SMODS.scale_card(card, {
         ref_table = card.ability.extra,
         ref_value = 'xmult',
         scalar_value = 'xmult_mod',
-        no_message = true
+        message_colour = G.C.MULT
       })
-      return { message = localize('k_upgrade_ex'), focus = card, colour = G.C.MULT }
-    end
-    if context.destroying_card and SMODS.has_enhancement(context.destroying_card, 'm_stone') and not context.blueprint then
       return true
     end
     if context.joker_main and card.ability.extra.xmult > 1 then

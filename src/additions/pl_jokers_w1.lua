@@ -473,8 +473,7 @@ SMODS.Joker {
     local give_xmult = false
 
     if context.other_joker then
-      if NametagCompatible[context.other_joker.config.center.key] or (context.other_joker.config.center.loc_txt and context.other_joker.config.center.loc_txt.name
-      and (string.find(context.other_joker.config.center.loc_txt.name, 'Joker') or string.find(context.other_joker.config.center.loc_txt.name, 'joker'))) then
+      if context.other_joker.edition then
         give_xmult = true
       end
     end
