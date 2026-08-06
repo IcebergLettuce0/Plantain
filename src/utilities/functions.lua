@@ -2,7 +2,7 @@ function PL_UTIL.wild_card_count()
   local count = 0
   if G.playing_cards then
     for k, v in pairs(G.playing_cards) do
-      if v.config.center == G.P_CENTERS.m_wild then count = count + 1 end
+      if SMODS.has_enhancement(v, 'm_wild') then count = count + 1 end
     end
   end
   return count

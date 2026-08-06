@@ -130,8 +130,8 @@ return {
         name = 'Nametag',
         text = {
           '{X:mult,C:white}X2{} Mult for every',
-          '{C:attention}Joker{} with \'Joker\'',
-          'in its name'
+          '{C:attention}Joker{} with',
+          'an {C:dark_edition}edition'
         }
       },
       j_pl_calculator = {
@@ -222,9 +222,9 @@ return {
       j_pl_quarry = {
         name = 'Quarry',
         text = {
-          'Gains {X:mult,C:white}X#1#{} Mult each time',
-          'a {C:attention}Stone{} card scores, destroy',
-          'all played {C:attention}Stone{} cards',
+          'Destroy all played {C:attention}Stone{} cards',
+          'and gain {X:mult,C:white}X#1#{} Mult for each',
+          '{C:attention}Stone{} card destroyed',
           '{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)'
         }
       },
