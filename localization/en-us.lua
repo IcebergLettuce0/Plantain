@@ -287,16 +287,8 @@ return {
           'an {C:attention}enhanced{} card'
         }
       },
-      j_pl_automaton = {
-        name = 'Automaton',
-        text = {
-          'After a {C:attention}face{} card',
-          'scores, the {C:attention}next non-face',
-          'card is retriggered {C:attention}twice'
-        }
-      },
-      j_pl_lemonade_stand = {
-        name = 'Lemonade Stand',
+      j_pl_lemonade = {
+        name = 'Lemonade',
         text = {
           'Increase {C:attention}shop{} size by {C:attention}#1#',
           'Decrease by {C:attention}#2#{} at the',
@@ -372,8 +364,8 @@ return {
       pl_pop_up_joker_winner_4 = 'Free Antivirus!',
       pl_hot_air_balloon_pop = 'Pop!',
       pl_lasagna_mama_mia = 'Mama Mia!',
-      pl_lemonade_stand_decrease = '-1 Shop Size',
-      pl_lemonade_stand_sold_out = 'Sold Out!',
+      pl_lemonade_decrease = '-1 Shop Size',
+      pl_lemonade_sold_out = 'Sold Out!',
     },
   --achievement_descriptions={},
   -- achievement_names={},

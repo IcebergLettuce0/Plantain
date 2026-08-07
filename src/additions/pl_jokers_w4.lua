@@ -35,58 +35,7 @@ SMODS.Joker {
 --UNCOMMONS
 
 SMODS.Joker {
-  key = 'automaton',
-  atlas = 'pl_atlas_w4',
-  pos = { x = 1, y = 0 },
-
-  config = { extra = { active = false, itsme = false } },
-
-  blueprint_compat = true,
-  eternal_compat = true,
-  perishable_compat = true,
-  discovered = true,
-
-  rarity = 2,
-  cost = 6,
-
-  calculate = function (self, card, context)
-    if context.cardarea then
-      if context.individual and not context.blueprint then
-        card.ability.extra.itsme = false
-        if context.other_card:get_id() >= 11 and context.other_card:get_id() <= 13 then
-          card.ability.extra.active = true
-        else
-          if card.ability.extra.active == true then
-            card.ability.extra.itsme = true
-            card.ability.extra.active = false
-          end
-        end
-      elseif context.repetition and card.ability.extra.itsme then
-        return {
-          message = localize("k_again_ex"),
-          repetitions = 2,
-          card = card,
-        }
-      end
-    end
-    -- if context.cardarea == G.play and context.repetition then
-    --   if context.other_card:get_id() >= 11 and context.other_card:get_id() <= 13 then
-    --     card.ability.extra.active = true
-    --   elseif card.ability.extra.active == true and not context.blueprint then
-    --     card.ability.extra.active = false
-    --     return 
-    --     {
-    --       message = localize("k_again_ex"),
-    --       repetitions = 2,
-    --       card = card, 
-    --     }
-    --   end
-    -- end
-  end
-}
-
-SMODS.Joker {
-  key = 'lemonade_stand',
+  key = 'lemonade',
   atlas = 'pl_atlas_w4',
   pos = { x = 2, y = 0 },
 
@@ -137,9 +86,9 @@ SMODS.Joker {
               return true
           end
         })) 
-        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_lemonade_stand_sold_out'), colour = G.C.MONEY})
+        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_lemonade_sold_out'), colour = G.C.MONEY})
       else
-        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_lemonade_stand_decrease'), colour = G.C.MONEY})
+        card_eval_status_text(card, 'jokers', nil, nil, nil, {message = localize('pl_lemonade_decrease'), colour = G.C.MONEY})
       end
     end
   end,
