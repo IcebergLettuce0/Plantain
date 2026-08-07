@@ -179,7 +179,7 @@ return {
       j_pl_hot_air_balloon = {
         name = 'Hot Air Balloon',
         text = {
-          'Earn {C:money}$#1#{} at end of round',
+          'Earn {C:money}$#1#{} at end of round.',
           'When {C:tarot}Tarot{} card used, increase',
           'payout by {C:money}$#2#{}, with {C:green}#3# in #4#{}',
           'chance this card is {C:attention}destroyed'

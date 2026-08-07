@@ -151,7 +151,7 @@ SMODS.Joker {
   cost = 6,
 
   calculate = function(self, card, context)
-    if context.individual and context.cardarea == G.play then
+    if context.individual and context.cardarea == G.play and (not SMODS.has_enhancement(context.other_card, 'm_stone')) then
       local rank = context.other_card:get_id()
       if rank == 11 or rank == 12 or rank == 13 then rank = 10 end
       if rank == 14 then rank = 11 end
