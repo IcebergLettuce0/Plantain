@@ -94,5 +94,42 @@ SMODS.Joker {
   end,
 }
 
+SMODS.Joker {
+  key = 'fun_house',
+  atlas = 'pl_atlas_w4',
+  pos = { x = 3, y = 0 },
+  
+  config = { extra = { xmult_mod = 0.5, xmult = 1 } },
+  loc_vars = function(self, info_queue, card)
+    return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+  end,
+  attributes = {'xmult', 'scaling', 'hand_type'},
+
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = false,
+  discovered = true,
+
+  rarity = 2,
+  cost = 6,
+
+  calculate = function(self, card, context)
+    if context.before and G.GAME.current_round.hands_played == 0 and next(context.poker_hands['Full House']) and not context.blueprint then
+      SMODS.scale_card(card, {
+        ref_table = card.ability.extra,
+        ref_value = 'xmult',
+        scalar_value = 'xmult_mod',
+        message_colour = G.C.MULT
+      })
+      return true
+    end
+    if context.joker_main and card.ability.extra.xmult > 1 then
+      return {
+        xmult = card.ability.extra.xmult
+      }
+    end
+  end
+}
+
 -- RARES
 

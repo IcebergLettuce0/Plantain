@@ -295,6 +295,15 @@ return {
           'end of the {C:attention}shop'
         }
       },
+      j_pl_fun_house = {
+        name = 'Fun House',
+        text = {
+          'If {C:attention}first hand{} of round',
+          'contains {C:attention}Full House{},',
+          'gain {X:mult,C:white}X#1#{} Mult',
+          '{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)'
+        }
+      },
     },
     Other={
       pl_lavender_seal = {
